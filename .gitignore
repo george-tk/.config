@@ -1,0 +1,22 @@
+# Browser Data (Sensitive & Huge)
+google-chrome/
+
+# System/Binary Data
+dconf/
+pulse/
+systemd/
+
+# Temporary/Cache Files
+*.log
+*.bak
+package-lock.json
+node_modules/
+
+# SDDM System Files (Keep the themes, but ignore root-owned files if any)
+# sddm/sddm.conf should be kept as it's part of your config
+
+# Thunar Trash/Metadata
+Thunar/
+
+# Any large binary files that might have snuck in
+# wallpapers/ is fine since you want those.

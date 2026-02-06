@@ -1,0 +1,528 @@
+/*
+ * __        __          _                  ____  _         _       
+ * \ \      / /_ _ _   _| |__   __ _ _ __  / ___|| |_ _   _| | ___  
+ *  \ \ /\ / / _` | | | | '_ \ / _` | '__| \___ \| __| | | | |/ _ \ 
+ *   \ V  V / (_| | |_| | |_) | (_| | |     ___) | |_| |_| | |  __/ 
+ *    \_/\_/ \__,_|\__, |_.__/ \__,_|_|    |____/ \__|\__, |_|\___| 
+ *                 |___/                              |___/         
+ *  
+ * by Stephan Raabe (2024) 
+ * ----------------------------------------------------- 
+*/
+
+@define-color base #1E1E2E;
+@define-color mantle #181825;
+@define-color crust #11111B;
+@define-color text #CDD6F4;
+@define-color subtext0 #A6ADC8;
+@define-color subtext1 #BAC2DE;
+@define-color surface0 #313244;
+@define-color surface1 #45475A;
+@define-color surface2 #585B70;
+@define-color overlay0 #6C7086;
+@define-color overlay1 #7F849C;
+@define-color overlay2 #9399B2;
+@define-color blue #89B4FA;
+@define-color lavender #B4BEFE;
+@define-color sapphire #74C7EC;
+@define-color sky #89DCEB;
+@define-color teal #94E2D5;
+@define-color green #A6E3A1;
+@define-color yellow #F9E2AF;
+@define-color peach #FAB387;
+@define-color maroon #EBA0AC;
+@define-color red #F38BA8;
+@define-color mauve #CBA6F7;
+@define-color pink #F5C2E7;
+@define-color flamingo #F2CDCD;
+@define-color rosewater #F5E0DC;
+
+/* -----------------------------------------------------
+ * General 
+ * ----------------------------------------------------- */
+
+ * {
+    font-family: "Fira Sans Semibold", "Font Awesome 7 Free", "Font Awesome 7 Brands", "Font Awesome 6 Free", "Font Awesome 6 Brands", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    border: none;
+    border-radius: 0px;
+}
+
+window#waybar {
+    background-color: alpha(@base, 0.8);
+    border-bottom: 0px solid @text;
+    background: transparent;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* -----------------------------------------------------
+ * Workspaces
+ * ----------------------------------------------------- */
+
+#workspaces {
+    background: transparent;
+    margin: 0px 10px 0px 0px;
+    padding: 0px;
+    border-radius: 0px;
+    font-size: 20px;
+    font-weight: bold;
+    font-style: normal;
+    opacity: 1.0;
+    color: @text;
+}
+
+#workspaces button {
+    padding: 0px 5px;
+    margin: 0px 2px;
+    border-radius: 0px;
+    color: @subtext0;
+    background-color: transparent;
+    transition: all 0.1s linear;
+    opacity: 0.4;
+    font-size: 20px;
+}
+
+#workspaces button.active {
+    color: @text;
+    background: transparent;
+    border-radius: 0px;
+    min-width: 30px;
+    transition: all 0.1s linear;
+    opacity:1.0;
+}
+
+#workspaces button:hover {
+    color: @text;
+    background: transparent;
+    border-radius: 0px;
+    opacity:0.7;
+}
+
+/* -----------------------------------------------------
+ * Tooltips
+ * ----------------------------------------------------- */
+
+tooltip {
+    border-radius: 16px;
+    background-color: @mantle;
+    opacity:0.9;
+    padding:20px;
+    margin:0px;
+}
+
+tooltip label {
+    color: @text;
+}
+
+/* -----------------------------------------------------
+ * Window
+ * ----------------------------------------------------- */
+
+#window {
+    margin: 0px 15px 0px 0px;
+    padding: 0px 10px;
+    border-radius: 5px 5px 5px 5px;
+    color: @text;
+    font-size: 20px;
+    font-weight:normal;
+    opacity:1.0;
+}
+
+window#waybar.empty #window {
+    background-color:transparent;
+}
+
+/* -----------------------------------------------------
+ * Taskbar
+ * ----------------------------------------------------- */
+
+#taskbar {
+    background: @surface0;
+    margin: 3px 15px 3px 0px;
+    padding:0px;
+    border-radius: 5px 5px 5px 5px;
+    font-weight: normal;
+    font-style: normal;
+    opacity:1.0;
+    border: 3px solid @surface0;
+}
+
+#taskbar button {
+    margin:0;
+    border-radius: 5px 5px 5px 5px;
+    padding: 0px 5px 0px 5px;
+}
+
+#taskbar.empty {
+    background:transparent;
+    border:0;
+    padding:0;
+    margin:0;
+}
+
+/* -----------------------------------------------------
+ * Modules
+ * ----------------------------------------------------- */
+
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+}
+
+/* -----------------------------------------------------
+ * Custom Quicklinks
+ * ----------------------------------------------------- */
+
+#custom-brave,
+#custom-browser,
+#custom-keybindings,
+#custom-outlook,
+#custom-filemanager,
+#custom-teams,
+#custom-chatgpt,
+#custom-calculator,
+#custom-windowsvm,
+#custom-cliphist,
+#custom-settings,
+#custom-wallpaper,
+#custom-system,
+#custom-hyprshade,
+#custom-hypridle,
+#custom-tools,
+#custom-quicklink1,
+#custom-quicklink2,
+#custom-quicklink3,
+#custom-quicklink4,
+#custom-quicklink5,
+#custom-quicklink6,
+#custom-quicklink7,
+#custom-quicklink8,
+#custom-quicklink9,
+#custom-quicklink10,
+#custom-quicklink_chromium,
+#custom-quicklink_edge,
+#custom-quicklink_firefox,
+#custom-quicklink_browser,
+#custom-quicklink_filemanager,
+#custom-quicklink_email,
+#custom-quicklink_thunderbird,
+#custom-quicklink_calculator,
+#custom-waybarthemes {
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 1.0;
+    color: @text;
+}
+
+#custom-quicklink1,
+#custom-quicklink2,
+#custom-quicklink3,
+#custom-quicklink4,
+#custom-quicklink5,
+#custom-quicklink6,
+#custom-quicklink7,
+#custom-quicklink8,
+#custom-quicklink9,
+#custom-quicklink10 {
+    margin-right: 10px;
+}
+
+#custom-tools {
+    margin-right:12px;
+}
+
+#custom-hypridle.active {
+    color: @green;
+}
+
+#custom-hypridle.notactive {
+    color: @red;
+}
+
+#custom-ml4w-welcome {
+    margin-right: 12px;
+    background-image: url("../assets/ml4w-icon.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-right: 20px;
+}
+
+#custom-chatgpt {
+    margin-right: 16px;
+    background-image: url("../assets/openai.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    padding-right: 18px;
+    opacity: 0.8;
+}
+
+/* -----------------------------------------------------
+ * Idle Inhibator
+ * ----------------------------------------------------- */
+
+#idle_inhibitor {
+    margin-right: 15px;
+    font-size: 22px;
+    font-weight: bold;
+    opacity: 0.8;
+    color: @text;
+}
+
+#idle_inhibitor.activated {
+    margin-right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    opacity: 0.8;
+    color: @red;
+}
+
+/* -----------------------------------------------------
+ * Custom Modules
+ * ----------------------------------------------------- */
+
+#custom-appmenu {
+    background-color: transparent;
+    font-size: 18px;
+    color: @text;
+    border-radius: 0px;
+    padding: 2px 10px 2px 10px; /* Changed to symmetrical vertical padding */
+    margin: 2px 17px 2px 0px;
+    opacity:1.0;
+    border:3px solid @surface0;
+}
+
+/* -----------------------------------------------------
+ * Custom Notification
+ * ----------------------------------------------------- */
+
+ #custom-notification {
+    margin: 0px 13px 0px 0px;
+    padding:0px;
+    font-size:20px;
+    color: @text;
+    opacity: 0.8;
+}
+
+
+
+/* -----------------------------------------------------
+ * Custom Exit
+ * ----------------------------------------------------- */
+
+#custom-exit {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+/* -----------------------------------------------------
+ * Custom Updates
+ * ----------------------------------------------------- */
+
+#custom-updates {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+#custom-updates.green {
+    color: @green;
+}
+
+#custom-updates.yellow {
+    background-color: @peach;
+    color: @base;
+}
+
+#custom-updates.red {
+    background-color: @red;
+    color: @base;
+}
+
+/* -----------------------------------------------------
+ * Hardware Group
+ * ----------------------------------------------------- */
+
+#disk,#memory,#cpu,#language {
+    margin:0px 0px 0px 0px;
+    padding:0px;
+    font-size:18px; /* Increased font size */
+    color:@text;
+}
+
+#language {
+    margin-right:10px;
+}
+
+/* -----------------------------------------------------
+ * Power Profiles Daemon
+ * ----------------------------------------------------- */
+
+#power-profiles-daemon {
+    margin: 0px 13px 0px 0px;
+    padding:0px;
+    font-size:16px;
+    color:@text;
+}
+
+/* -----------------------------------------------------
+ * Clock
+ * ----------------------------------------------------- */
+
+#clock {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+/* -----------------------------------------------------
+ * Backlight
+ * ----------------------------------------------------- */
+
+#backlight {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+/* -----------------------------------------------------
+ * Pulseaudio
+ * ----------------------------------------------------- */
+
+#pulseaudio {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+#pulseaudio.muted,
+#network.disconnected,
+#network.disabled {
+    color: @red;
+}
+
+#battery.warning {
+	color: @red;
+}
+
+/* -----------------------------------------------------
+ * Network
+ * ----------------------------------------------------- */
+
+#network {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+#network.ethernet {
+    background-color: transparent;
+    color: @text;
+}
+
+#network.wifi {
+    background-color: transparent;
+    color: @text;
+}
+
+/* -----------------------------------------------------
+ * Bluetooth
+ * ----------------------------------------------------- */
+
+#bluetooth, #bluetooth.on, #bluetooth.connected {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+#bluetooth.off, #bluetooth.disabled {
+    color: @red;
+    padding: 0px 10px;
+    margin: 0px;
+}
+
+/* -----------------------------------------------------
+ * Battery
+ * ----------------------------------------------------- */
+
+#battery {
+    background-color: transparent;
+    font-size: 20px;
+    color: @text;
+    border-radius: 0px;
+    padding: 0px 10px;
+    margin: 0px;
+    opacity:1.0;
+}
+
+#battery.charging, #battery.plugged {
+    color: @green;
+    background-color: transparent;
+}
+
+@keyframes blink {
+    to {
+        background-color: @red;
+        color: @base;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background-color: @red;
+    color: @base;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+/* -----------------------------------------------------
+ * Tray
+ * ----------------------------------------------------- */
+
+#tray {
+    padding: 0px 0px 0px 0px; /* Decreased right padding to 0px */
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+}
