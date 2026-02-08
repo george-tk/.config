@@ -99,7 +99,7 @@ _installYay() {
     _installPackages "base-devel"
     
     # Create temp directory for yay
-    yay_dir="$USER_HOME/yay_install_temp"
+    yay_dir="yay_install_temp"
     if [ -d "$yay_dir" ]; then
         rm -rf "$yay_dir"
     fi
@@ -155,7 +155,7 @@ cat <<'EOF'
  _\ \/ -_) __/ // / _ \
 /___/\__/\__/",_/ .__/
                 /_/    
-ML4W Hyprland Starter for Arch based distros
+Hyprland Starter for Arch based distros
 
 EOF
 echo -e "${NONE}"
@@ -182,6 +182,7 @@ while true; do
             ;; 
     esac
 done
+sudo pacman -S --needed base-devel git
 
 # Install yay if needed
 if [[ $(_checkCommandExists "yay") == 0 ]]; then
@@ -193,23 +194,41 @@ fi
 
 # Packages
 _installPackages "${packages[@]}"
-
+sudo pacman -S wl-clipboard cliphist
+sudo pacman -S pavucontrol
 
 # ----------------------------------------------------------
 # NPM Packages
 # ----------------------------------------------------------
 
-echo ":: Installing global npm packages..."
-if ! command -v npm &> /dev/null; then
-    echo ":: npm is not installed. Skipping."
-else
-    if command -v gemini &> /dev/null; then
-        echo ":: @google/gemini-cli is already installed."
-    else
-        echo ":: Installing @google/gemini-cli..."
-        npm install -g @google/gemini-cli
-    fi
+# Define the REAL user home (the person who ran the script, not root)
+REAL_USER=${SUDO_USER:-$USER}
+REAL_HOME=$(getent passwd "$REAL_USER" | cut -d: -f6)
+
+echo ":: Configuring npm for user: $REAL_USER"
+
+# 1. Create the global bin folder in your home
+mkdir -p "$REAL_HOME/.npm-global"
+chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.npm-global"
+
+# 2. Tell npm where to put global files
+sudo -u "$REAL_USER" npm config set prefix "$REAL_HOME/.npm-global"
+
+# 3. Fix the .bashrc PATH (using the correct home path)
+BASHRC_FILE="$REAL_HOME/.bashrc"
+if [ ! -f "$BASHRC_FILE" ]; then
+    touch "$BASHRC_FILE"
+    chown "$REAL_USER:$REAL_USER" "$BASHRC_FILE"
 fi
+
+if ! grep -q ".npm-global/bin" "$BASHRC_FILE"; then
+    echo 'export PATH="$HOME/.npm-global/bin:$PATH"' >> "$BASHRC_FILE"
+    echo ":: Added npm bin to $BASHRC_FILE PATH"
+fi
+
+echo ":: Installing @google/gemini-cli..."
+# 4. Install specifically as the real user
+sudo -u "$REAL_USER" npm install -g @google/gemini-cli
 
 # ----------------------------------------------------------
 # SDDM Configuration
@@ -219,14 +238,14 @@ if [ -d "$CONFIG_DIR/sddm" ]; then
     # Copy themes
     if [ -d "$CONFIG_DIR/sddm/themes" ]; then
         echo ":: Installing SDDM themes..."
-        mkdir -p /usr/share/sddm/themes
-        cp -r "$CONFIG_DIR/sddm/themes/"* /usr/share/sddm/themes/
+        sudo mkdir -p /usr/share/sddm/themes
+        sudo cp -r "$CONFIG_DIR/sddm/themes/"* /usr/share/sddm/themes/
     fi
 
     # Copy config
     if [ -f "$CONFIG_DIR/sddm/sddm.conf" ]; then
         echo ":: Installing SDDM configuration..."
-        cp "$CONFIG_DIR/sddm/sddm.conf" /etc/sddm.conf
+        sudo cp "$CONFIG_DIR/sddm/sddm.conf" /etc/sddm.conf
     fi
 else
     echo ":: No 'sddm' folder found in $CONFIG_DIR. Skipping SDDM config."

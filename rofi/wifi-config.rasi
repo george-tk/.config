@@ -1,0 +1,110 @@
+/**
+ * Catppuccin-Mocha theme for Rofi (WiFi Menu)
+ * Strictly matches main system theme logic
+ */
+
+@import "catppuccin-mocha.rasi"
+
+* {
+    /* Map your theme variables */
+    background-color:             transparent;
+    text-color:                   @text;
+    margin:                       0;
+    padding:                      0;
+    spacing:                      0;
+}
+configuration {
+	font: "Fira Sans 16, Font Awesome 7 Free 16";
+}
+window {
+    location:                     center;
+    width:                        35%;
+    border:                       0px;
+    border-color:                 @base;
+    border-radius:                16px;
+    background-color:             @base;
+    padding:                      30px;
+}
+
+mainbox {
+    children:                     [inputbar, listview, message];
+    padding:                      0px;
+    background-color:             transparent;
+}
+
+inputbar {
+    children:                     [ "prompt", "entry" ];
+    margin:                       0px 0px 25px 0px;
+    padding:                      15px;
+    border:                       2px;
+    border-radius:                12px;
+    border-color:                 @mauve;
+    background-color:             @surface0;
+}
+
+prompt {
+    spacing:                      0;
+    text-color:                   @text;
+    margin:                       0px 10px 0px 0px;
+    background-color:             transparent;
+}
+
+entry {
+    placeholder:                  " Search Networks";
+    text-color:                   @text;
+    background-color:             transparent;
+}
+
+listview {
+    enabled:                      true;
+    columns:                      1;
+    lines:                        6;
+    cycle:                        true;
+    scrollbar:                    false;
+    layout:                       vertical;
+    spacing:                      10px;
+    background-color:             transparent;
+}
+
+/* ---- Elements ---- */
+element {
+    enabled:                      true;
+    padding:                      10px;
+    border-radius:                10px;
+    cursor:                       pointer;
+    background-color:             transparent;
+}
+
+/* This section kills the yellow "alternate" rows */
+element normal.normal,
+element alternate.normal {
+    background-color:             transparent;
+    text-color:                   @text;
+}
+
+element selected.normal {
+    background-color:             @surface0;
+    text-color:                   @text;
+    border-radius:                10px;
+}
+
+element-text {
+    background-color:             transparent;
+    text-color:                   inherit;
+    vertical-align:               0.5;
+    horizontal-align:             0.0;
+    padding:                      0px 0px 0px 10px;
+}
+
+/* ---- Message Area ---- */
+message {
+    padding:                      1px;
+    border-color:                 @surface1;
+    border:                       2px dash 0px 0px;
+}
+
+textbox {
+    padding:                      15px;
+    text-color:                   @text;
+    background-color:             transparent;
+}

@@ -136,8 +136,8 @@
     "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50,
-    "on-click": "bash -c '/home/georgek/.config/rofi/scripts/rofi-network-manager/network-manager.sh'",
-    "on-click-right": "bash -c '/home/georgek/.config/rofi/scripts/rofi-network-manager/network-manager.sh'",
+    "on-click": "bash -c '~/.config/rofi/wifi-menu.sh'",
+    "on-click-right": "bash -c '~/.config/rofi/wifi-menu.sh'",
   },
 
     // Battery

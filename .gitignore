@@ -1,6 +1,7 @@
 # Browser Data (Sensitive & Huge)
 google-chrome/
-
+go/
+scripts/yay/
 # System/Binary Data
 dconf/
 pulse/
