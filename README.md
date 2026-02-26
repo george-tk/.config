@@ -4,16 +4,20 @@ This repository contains the configuration files (dotfiles) and setup scripts to
 
 ## 🚀 Quick Start
 
+1. Install Arch linux and connect to internet
+    ```bash
+    nmtui
+
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url> ~/.config
-    cd ~/.config
+    sudo pacman -S git
+    git clone --recursive https://github.com/george-tk/.config
     ```
 
 2.  **Run the Setup Script:**
     This script installs necessary packages (AUR via `yay`), sets up systemd services, and configures global settings.
     ```bash
-    ./scripts/setup.sh
+    ./.config/scripts/setup.sh
     ```
 
 ---
@@ -76,7 +80,6 @@ While the setup script handles most heavy lifting, the following aspects often r
         ```
 *   **Manual Trigger:** You can test it by running `./scripts/rotate-wallpaper.sh`.
 
-### 5. Base Arch Setup (Prerequisites)
 Before running the restore:
 *   Install a base Arch Linux system.
 *   Create your user (`george`) and add to `wheel`.
