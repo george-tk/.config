@@ -196,7 +196,7 @@ fi
 _installPackages "${packages[@]}"
 sudo pacman -S wl-clipboard cliphist
 sudo pacman -S pavucontrol
-
+sudo pacman -S neovim
 # ----------------------------------------------------------
 # NPM Packages
 # ----------------------------------------------------------
@@ -297,8 +297,8 @@ _enableService() {
     if systemctl is-active --quiet "$service"; then
         echo ":: $service is already running."
     else
-        systemctl enable --now "$service"
-        echo ":: $service enabled and started."
+        systemctl enable "$service"
+        echo ":: $service enabled for next boot."
     fi
 }
 
@@ -314,5 +314,14 @@ echo ":: Services enabled."
 # Completed
 # ----------------------------------------------------------
 
-echo ":: Installation complete."
-echo ":: Please reboot your system."
+echo -e "${GREEN}:: Installation complete.${NONE}"
+read -p "WOULD YOU LIKE TO REBOOT NOW? (Yy/Nn): " rb
+case $rb in
+    [Yy]*) 
+        sudo reboot
+        ;; 
+    *) 
+        echo ":: Please reboot manually to finalize the setup."
+        exit
+        ;; 
+esac
