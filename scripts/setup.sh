@@ -194,9 +194,7 @@ fi
 
 # Packages
 _installPackages "${packages[@]}"
-sudo pacman -S wl-clipboard cliphist
-sudo pacman -S pavucontrol
-sudo pacman -S neovim
+sudo pacman -S wl-clipboard cliphist pavucontrol ripgrep fd fzf tree-sitter-cli neovim
 # ----------------------------------------------------------
 # NPM Packages
 # ----------------------------------------------------------
