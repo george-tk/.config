@@ -50,7 +50,8 @@ prompt {
 }
 
 entry {
-    placeholder:                  " Search Networks";
+    // placeholder:                  " Search Networks";
+    placeholder:                  " ";
     text-color:                   @text;
     background-color:             transparent;
 }
