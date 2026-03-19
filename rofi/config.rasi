@@ -34,9 +34,11 @@
 configuration {
     modi: "combi,files:~/.config/rofi/files.sh,";
     combi-modi: "window,drun,files,";
-    font: "Fira Sans 16, Font Awesome 7 Free 16";
+    font: "JetBrainsMono Nerd Font 16";
     show-icons: true;
     icon-theme: "Papirus";
+    drun-display-format: "<b><span color='#cba6f7'>{name}</span></b>";
+    window-format: "<b><span color='#cba6f7'>{c}</span></b>  │  <span color='#a6adc8'>{t}</span>";
     display-drun: "      ";
     display-window: "  ";
     display-run: " ";

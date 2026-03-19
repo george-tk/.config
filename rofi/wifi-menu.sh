@@ -40,21 +40,24 @@ else
             id = ssid band;
             
             if (id != aid && ssid != "" && !seen[id]++) {
-                printf "%3d%%  %-25s [%s]\n", sig, ssid, band
+                printf "<b><span color=\"#cba6f7\">%-25s</span></b>  │  <span color=\"#a6adc8\">%3d%%  [%s]</span>\n", ssid, sig, band
             }
         }')
 fi
 
 # 4. Create Menu
-options="$toggle\n󰑐  Refresh List\n󰑐  Manual Entry / Hidden SSID\n󰃢  Disconnect\n$SEPARATOR\n$provider_list"
+options="<b><span color=\"#cba6f7\">$toggle</span></b>\n<b><span color=\"#cba6f7\">󰑐  Refresh List</span></b>\n<b><span color=\"#cba6f7\">󰑐  Manual Entry / Hidden SSID</span></b>\n<b><span color=\"#cba6f7\">󰃢  Disconnect</span></b>\n$SEPARATOR\n$provider_list"
 
 # 5. Rofi Prompt
 chosen=$(echo -e "$options" | $ROFI_CMD -p "$status")
 
 [[ -z "$chosen" || "$chosen" == "$SEPARATOR" || "$chosen" == *"No Networks Found"* ]] && exit
 
+# Clean up Pango tags for logic (extracting text between first > and first <)
+clean_chosen=$(echo "$chosen" | sed 's/<[^>]*>//g')
+
 # 6. Logic Case
-case "$chosen" in
+case "$clean_chosen" in
     "$toggle")
         [[ "$wifi_state" == "enabled" ]] && nmcli radio wifi off || nmcli radio wifi on ;;
     "󰑐  Refresh List")
@@ -73,7 +76,7 @@ case "$chosen" in
         manual_pass=$($ROFI_CMD -p "Password:" -password)
         nmcli device wifi connect "$manual_ssid" password "$manual_pass" ;;
     *)
-        ssid=$(echo "$chosen" | sed -E 's/^[ ]*[0-9]+%[ ]+//; s/[ ]*\[(2\.4G|5G)\]//; s/[ ]*$//')
+        ssid=$(echo "$clean_chosen" | sed -E 's/[ ]*│.*$//; s/[ ]*$//')
         if nmcli -t -f name connection show | grep -qx "$ssid"; then
             nmcli connection up "$ssid"
         else

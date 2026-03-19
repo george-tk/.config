@@ -14,7 +14,7 @@
     spacing:                      0;
 }
 configuration {
-	font: "Fira Sans 16, Font Awesome 7 Free 16";
+	font: "JetBrainsMono Nerd Font 16";
 }
 window {
     location:                     center;
@@ -95,6 +95,7 @@ element-text {
     vertical-align:               0.5;
     horizontal-align:             0.0;
     padding:                      0px 0px 0px 10px;
+    markup:                       true;
 }
 
 /* ---- Message Area ---- */
