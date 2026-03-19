@@ -65,8 +65,9 @@ mapfile -t data < <(awk '
 
     if (desc == "") desc = executable_command
     
-    # Output alternating lines for mapfile: display text then the command
-    print keys_display "\r" desc
+    # Output alternating lines for mapfile: styled display text then the command
+    # Using Catppuccin Mauve (#cba6f7) for keys and Subtext0 (#a6adc8) for descriptions
+    printf "<b><span color=\"#cba6f7\">%s</span></b>\r<span color=\"#a6adc8\" size=\"small\">%s</span>\n", keys_display, desc
     print executable_command
 }' "$config_file")
 
