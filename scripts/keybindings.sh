@@ -48,19 +48,23 @@ mapfile -t data < <(awk '
     # Extract dispatcher and parameters
     dispatcher = f[3]; gsub(/^[ \t]+|[ \t]+$/, "", dispatcher)
     
-    # Find start of parameters (everything after 2nd comma)
+    # Find start of dispatcher parameters (everything after 3rd comma)
     c = 0; p_start = 0
     for (i=1; i<=length(bind_part); i++) {
         if (substr(bind_part, i, 1) == ",") {
-            if (++c == 2) { p_start = i + 1; break }
+            if (++c == 3) { p_start = i + 1; break }
         }
     }
-    params = substr(bind_part, p_start); gsub(/^[ \t]+|[ \t]+$/, "", params)
+    if (p_start > 0) {
+        args = substr(bind_part, p_start); gsub(/^[ \t]+|[ \t]+$/, "", args)
+    } else {
+        args = ""
+    }
 
     if (dispatcher == "exec") {
-        executable_command = params
+        executable_command = args
     } else {
-        executable_command = "hyprctl dispatch " dispatcher " " params
+        executable_command = "hyprctl dispatch " dispatcher (args != "" ? " " args : "")
     }
 
     if (desc == "") desc = executable_command
