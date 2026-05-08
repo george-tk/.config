@@ -136,13 +136,13 @@ setup_base() {
 # 2. Package Installation
 # ----------------------------------------------------------
 install_packages() {
-    log_info "Installing packages..."
+    log_info "Synchronizing system and installing packages..."
     
-    # Use yay to install everything at once (handles deps and prevents loops)
-    # We run yay as the real user
-    sudo -u "$REAL_USER" yay -S --needed --noconfirm "${PACKAGES[@]}"
+    # Changed -S to -Syu to ensure the whole system stays in sync
+    # This prevents the "breaks dependency" errors you just saw
+    sudo -u "$REAL_USER" yay -Syu --needed --noconfirm "${PACKAGES[@]}"
     
-    log_success "All packages installed."
+    log_success "All packages installed and system updated."
 }
 
 # ----------------------------------------------------------
@@ -201,7 +201,26 @@ setup_cron() {
         log_warn "Rotate script not found at $rotate_script"
     fi
 }
-
+# ----------------------------------------------------------
+# X. Time & Localization Configuration
+# ----------------------------------------------------------
+setup_timezone() {
+    log_info "Configuring Timezone (Europe/London) and NTP..."
+    
+    # Set the timezone
+    timedatectl set-timezone Europe/London
+    
+    # Ensure Hardware Clock is set to UTC (The Linux standard)
+    hwclock --systohc
+    
+    # Enable Network Time Synchronization (NTP)
+    timedatectl set-ntp true
+    
+    # Force systemd-timesyncd to enable/start just in case
+    systemctl enable --now systemd-timesyncd
+    
+    log_success "Timezone set to Europe/London and NTP enabled."
+}
 # ----------------------------------------------------------
 # 6. Service Enabling
 # ----------------------------------------------------------
@@ -212,6 +231,7 @@ enable_services() {
     systemctl enable NetworkManager
     systemctl enable bluetooth
     systemctl enable cronie
+    systemctl enable systemd-timesyncd
 }
 
 # ----------------------------------------------------------
@@ -316,6 +336,7 @@ fi
 
 setup_npm
 setup_sddm
+setup_timezone
 setup_cron
 enable_services
 setup_gtk

@@ -20,8 +20,9 @@ This repository contains the configuration files (dotfiles) and setup scripts to
     ./.config/scripts/setup.sh
     ```
 
----
-
+## Updating repo
+- pull everything `git pull --recursive-submodules`
+- update submodules to latest remote `git submodule update --remote`
 ## 🔧 Vital Configuration Details
 
 While the setup script handles most heavy lifting, the following aspects often require manual verification or understanding of how they were achieved.
