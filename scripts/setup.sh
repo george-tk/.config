@@ -28,6 +28,7 @@ fi
 PACKAGES=(
     # System & Core
     "wget"
+    "curl"
     "unzip"
     "git"
     "gum"
@@ -159,10 +160,21 @@ setup_npm() {
     
     # Configure npm prefix
     sudo -u "$REAL_USER" npm config set prefix "$npm_global_dir"
+}
+
+# ----------------------------------------------------------
+# 3b. Antigravity Configuration
+# ----------------------------------------------------------
+setup_antigravity() {
+    log_info "Installing Antigravity CLI for user: $REAL_USER"
     
-    # Install Gemini CLI
-    log_info "Installing @google/gemini-cli..."
-    sudo -u "$REAL_USER" npm install -g @google/gemini-cli
+    # Ensure ~/.local/bin exists
+    local local_bin_dir="$REAL_HOME/.local/bin"
+    mkdir -p "$local_bin_dir"
+    chown -R "$REAL_USER:$REAL_USER" "$local_bin_dir"
+    
+    # Install via official curl script run as real user
+    sudo -u "$REAL_USER" bash -c "curl -fsSL https://antigravity.google/cli/install.sh | bash"
 }
 
 # ----------------------------------------------------------
@@ -335,6 +347,7 @@ if command -v flatpak &> /dev/null; then
 fi
 
 setup_npm
+setup_antigravity
 setup_sddm
 setup_timezone
 setup_cron
