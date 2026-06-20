@@ -1,100 +1,119 @@
 #!/bin/bash
-#  _              _     _           _ _
-# | | _____ _   _| |__ (_)_ __   __| (_)_ __   __ _ ___
-# | |/ / _ \ | | | '_ \| | '_ \ / _` | | '_ \ / _` / __|
-# |   <  __/ |_| | |_) | | | | | (_| | | | | | (_| \__ \
+#  _                            _     _           _     
+# | | _____ _   _ _ __  _ _ __  __| | | | '_ \ / _` / __|
+# |  <  __/ |_| | |_) | | | | | (_| | | | | | | (_| \__ \
 # |_|\_\___|\__, |_.__/|_|_| |_|\__,_|_|_| |_|\__, |___/ 
-#           |___/                             |___/ 
-# Optimized version for performance using single-pass parsing.
-# -----------------------------------------------------
+#           |___/                             |___/     
+# Pure State Key Simulator with Rofi Escape Buffer
+# -------------------------------------------------------------------------
 
-config_file=~/.config/hypr/conf/binds.conf
+mapfile -t data < <(hyprctl binds | awk '
+BEGIN { RS = "" }
 
-# Use awk to parse the file once and output display items and commands on alternating lines.
-# This eliminates the overhead of multiple process forks per line.
-mapfile -t data < <(awk '
-/^[ \t]*bind[a-zA-Z]*[ \t]*=/ {
-    line = $0
-    # Extract description
-    desc = ""; bind_part = line
-    if (match(line, /##/)) {
-        desc = substr(line, RSTART + 2)
-        bind_part = substr(line, 1, RSTART - 1)
-    } else if (match(line, /#/)) {
-        desc = substr(line, RSTART + 1)
-        bind_part = substr(line, 1, RSTART - 1)
-    }
-    gsub(/^[ \t]+|[ \t]+$/, "", desc)
-    
-    # Extract bind definition
-    sub(/^[ \t]*bind[a-zA-Z]*[ \t]*=[ \t]*/, "", bind_part)
-    
-    # Split fields: Mod, Key, Dispatcher, Params
-    split(bind_part, f, ",")
-    keys_part = f[1] "," f[2]
-    
-    # Format keys for display
-    keys_display = keys_part
-    gsub(/\$mainMod/, "󰍲", keys_display)
-    gsub(/,\s*/, " + ", keys_display)
-    gsub(/^[ \t]*\+[ \t]*/, "", keys_display)
-    gsub(/SHIFT/, "+ SHIFT", keys_display)
-    gsub(/ALT/, "+ ALT", keys_display)
-    gsub(/SUPER \+ SUPER_L/, "󰍲", keys_display)
-    gsub(/CONTROL/, "+ CTRL", keys_display)
-    gsub(/^[ \t]+|[ \t]+$/, "", keys_display)
-    gsub(/[ \t]+/, " ", keys_display)
+{
+    modmask = ""
+    key = ""
+    keycode = ""
+    desc = ""
+    dispatcher = ""
+    arg = ""
 
-    # Extract dispatcher and parameters
-    dispatcher = f[3]; gsub(/^[ \t]+|[ \t]+$/, "", dispatcher)
-    
-    # Find start of dispatcher parameters (everything after 3rd comma)
-    c = 0; p_start = 0
-    for (i=1; i<=length(bind_part); i++) {
-        if (substr(bind_part, i, 1) == ",") {
-            if (++c == 3) { p_start = i + 1; break }
+    # 1. Parse the blocks into variables
+    for (i = 1; i <= NF; i++) {
+        if ($i == "modmask:")     { modmask = $(i+1) }
+        if ($i == "key:")         { key = $(i+1) }
+        if ($i == "keycode:")     { keycode = $(i+1) }
+        if ($i == "dispatcher:")  { dispatcher = $(i+1) }
+        if ($i == "arg:")         { arg = $(i+1) }
+        if ($i == "description:") { 
+            match($0, /description: .*/)
+            desc = substr($0, RSTART + 13, RLENGTH - 13)
+            gsub(/\n.*/, "", desc)
         }
     }
-    if (p_start > 0) {
-        args = substr(bind_part, p_start); gsub(/^[ \t]+|[ \t]+$/, "", args)
-    } else {
-        args = ""
+
+    if (key != "") {
+        # Create a safe display variable for the key
+        clean_key = key
+        if (clean_key == "SUPER_L" || clean_key == "CTRL_L" || clean_key == "ALT_L" || clean_key == "SHIFT_L") {
+            clean_key = ""
+        }
+
+        # 2. Map Modmasks explicitly to Rofi Display Layouts (Your logic sequence)
+        if (modmask == "65") {
+            bind_part = "󰍲 + " clean_key " + SHIFT"
+        } else if (key == "SUPER_L") {
+            bind_part = "󰍲"
+        } else if (modmask == "72") {
+            bind_part = "󰍲 + " clean_key " + ALT"
+        } else if (modmask == "73") {
+            bind_part = "󰍲 + " clean_key " + ALT + SHIFT"
+        } else if (modmask == "64") {
+            bind_part = "󰍲 + " clean_key
+        } else if (modmask == "68") {
+            bind_part = "󰍲 + " clean_key " + CTRL"
+        } else if (modmask == "69") {
+            bind_part = "󰍲 + " clean_key " + CTRL + SHIFT"
+        } else {
+            bind_part = clean_key
+        }
+
+        # Handle formatting cleanups for standalone mod presses or loose spaces
+        gsub(/[ \t]*\+[ \t]*$/, "", bind_part)
+        gsub(/^[ \t]*\+[ \t]* /, "", bind_part)
+        if (bind_part == "") { bind_part = "󰍲" }
+
+        # 3. Map Modmasks explicitly to wtype arguments
+        if (modmask == "64")      { w_mods = "-M win" }
+        else if (modmask == "65") { w_mods = "-M win -M shift" }
+        else if (modmask == "68") { w_mods = "-M win -M ctrl" }
+        else if (modmask == "69") { w_mods = "-M win -M ctrl -M shift" }
+        else if (modmask == "72") { w_mods = "-M win -M alt" }
+        else if (modmask == "73") { w_mods = "-M win -M alt -M shift" }
+        else                      { w_mods = "" }
+
+        # Lowercase symbol parsing for virtual device injection
+        w_key = tolower(key)
+        if (w_key == "super_l") { w_key = "" }
+
+        # Fallback if description field is empty
+        if (desc == "") { desc = "No description" }
+
+        # Output Line 1: Colored Rofi String
+        printf "<b><span color=\"#cba6f7\">%s</span></b>  │  <span color=\"#a6adc8\">%s</span>\n", bind_part, desc
+        
+        # Output Line 2: The shortcut packaged arguments
+        print dispatcher ";" arg ";" w_mods ";" w_key
     }
+}')
 
-    if (dispatcher == "exec") {
-        executable_command = args
-    } else {
-        executable_command = "hyprctl dispatch " dispatcher (args != "" ? " " args : "")
-    }
-
-    if (desc == "") desc = executable_command
-    
-    # Output: single line with a separator for a cleaner look
-    # Using Catppuccin Mauve (#cba6f7) for keys and Subtext0 (#a6adc8) for descriptions
-    # Using a separator to push the description to the right
-    printf "<b><span color=\"#cba6f7\">%s</span></b>  │  <span color=\"#a6adc8\">%s</span>\n", keys_display, desc
-    print executable_command
-}' "$config_file")
-
-# Split the data into separate arrays for rofi and execution
+# Distribute array lines sequentially
 menu_items=()
-commands=()
+shortcuts=()
 for ((i=0; i<${#data[@]}; i+=2)); do
     menu_items+=("${data[i]}")
-    commands+=("${data[i+1]}")
+    shortcuts+=("${data[i+1]}")
 done
 
-# Prepare rofi input
+# Feed and deploy Rofi
 rofi_input=$(printf "%s\n" "${menu_items[@]}")
-
-# Launch rofi and get the selected index
-# Added -no-show-icons to remove the gap on the left
 chosen_index=$(echo -e "${rofi_input}" | rofi -dmenu -i -p "  " -format 'i' -markup -no-show-icons)
 
-# If an index was returned, execute the command
-if [[ -n "$chosen_index" ]] && [[ "$chosen_index" -lt "${#commands[@]}" ]]; then
-    command_to_run="${commands[$chosen_index]}"
-    if [ -n "$command_to_run" ]; then
-        eval "$command_to_run" &>/dev/null &
+# Virtual Injector Command Event Fire
+if [[ -n "$chosen_index" ]] && [[ "$chosen_index" -lt "${#shortcuts[@]}" ]]; then
+    IFS=";" read -r dispatcher arg target_mods target_key <<< "${shortcuts[$chosen_index]}"
+    
+    # CRITICAL: Allow Rofi to completely shut down and release its keyboard focus
+    sleep 0.1
+    
+    if [ "$dispatcher" = "__lua" ] && [ -n "$arg" ]; then
+        # Execute the Lua bind callback directly using hyprctl eval (synchronously)
+        hyprctl eval "debug.getregistry()[$arg]()" &>/dev/null
+    elif [ -n "$dispatcher" ] && [ "$dispatcher" != "none" ]; then
+        # Execute the dispatcher directly via hyprctl dispatch (synchronously)
+        hyprctl dispatch "$dispatcher" "$arg" &>/dev/null
+    elif [ -n "$target_mods" ] || [ -n "$target_key" ]; then
+        # Fallback: Inject the key combo perfectly back into the active Wayland session
+        eval "wtype $target_mods $target_key" &>/dev/null &
     fi
 fi

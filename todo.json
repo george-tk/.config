@@ -1,0 +1,22 @@
+{
+  "todos": [
+    {
+      "created": "26/06/10",
+      "description": "",
+      "details": [],
+      "extra_fields": [],
+      "id": "t_20260610_200852_e768",
+      "labels": [],
+      "log": [],
+      "priority": "HIGH",
+      "reference": [],
+      "source": {
+        "file": "/home/georgek/.config/todo.json",
+        "todo_id": "t_20260610_200852_e768"
+      },
+      "status": "TODO",
+      "title": "khjkhkjhkjh"
+    }
+  ],
+  "version": 1
+}

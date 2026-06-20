@@ -301,6 +301,27 @@ setup_shell() {
 }
 
 # ----------------------------------------------------------
+# 9. Initramfs Optimization (The New Function)
+# ----------------------------------------------------------
+setup_initramfs() {
+    if [ -f /etc/mkinitcpio.conf ]; then
+        log_info "Surgically replacing udev hook with systemd..."
+        
+        if grep -q "^HOOKS=.*udev" /etc/mkinitcpio.conf; then
+            sed -i '/^HOOKS=/s/\budev\b/systemd/g' /etc/mkinitcpio.conf
+            log_success "HOOKS line updated in /etc/mkinitcpio.conf"
+            
+            log_info "Regenerating initramfs presets..."
+            mkinitcpio -P
+            log_success "Initramfs optimized successfully."
+        else
+            log_warn "udev hook not found on the HOOKS line. Skipping modification."
+        fi
+    else
+        log_error "/etc/mkinitcpio.conf not found!"
+    fi
+}
+# ----------------------------------------------------------
 # Main Execution
 # ----------------------------------------------------------
 
@@ -354,6 +375,7 @@ setup_cron
 enable_services
 setup_gtk
 setup_shell
+setup_initramfs
 
 echo
 log_success "Installation complete!"
