@@ -1,9 +1,9 @@
 {
     "layer": "top",
-    "margin-top": 15,
+    "margin-top": 10,
     "margin-bottom": 0,
-    "margin-left": 14,
-    "margin-right": 22,    
+    "margin-left": -1,
+    "margin-right": 15,    
     "spacing": 0,
 
     // Load Modules

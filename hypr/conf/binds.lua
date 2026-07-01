@@ -96,25 +96,26 @@ hl.bind(
 )
 
 -- Large Adjustments (Coarse step: 5%)
-hl.bind(mainMod .. " + equal", hl.dsp.layout("resizestep -0.05"), { description = "Decrease Layout Size (5%)" })
-hl.bind(mainMod .. " + minus", hl.dsp.layout("resizestep 0.05"), { description = "Increase Layout Size (5%)" })
+hl.bind(mainMod .. " + equal", hl.dsp.layout("resizestep 0.05"), { description = "Expand Focused Window (5%)" })
+hl.bind(mainMod .. " + minus", hl.dsp.layout("resizestep -0.05"), { description = "Shrink Focused Window (5%)" })
 
 -- Small Adjustments (Fine SHIFT step: 1%)
-hl.bind(mainMod .. " + SHIFT + equal", hl.dsp.layout("resizestep -0.01"), { description = "Decrease Layout Size (1%)" })
-hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.layout("resizestep 0.01"), { description = "Increase Layout Size (1%)" })
+hl.bind(mainMod .. " + SHIFT + equal", hl.dsp.layout("resizestep 0.01"), { description = "Expand Focused Window (1%)" })
+hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.layout("resizestep -0.01"), { description = "Shrink Focused Window (1%)" })
 hl.bind(mainMod .. " + ALT + equal", hl.dsp.layout("default"), { description = "Reset Layout Size" })
-hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.layout("default"), { description = "Reset Layout Size" })
+hl.bind(mainMod .. " + ALT + minus", hl.dsp.layout("default"), { description = "Reset Layout Size" })
 
--- hl.bind(mainMod .. " + left", hl.dsp.window.resize({ x = -100, y = 0, relative = true }))
--- hl.bind(mainMod .. " + right", hl.dsp.window.resize({ x = 100, y = 0, relative = true }))
--- hl.bind(mainMod .. " + up", hl.dsp.window.resize({ x = 0, y = -100, relative = true }))
--- hl.bind(mainMod .. " + down", hl.dsp.window.resize({ x = 0, y = 100, relative = true }))
---
--- hl.bind(mainMod .. " + SHIFT + left", hl.dsp.window.resize({ x = -10, y = 0, relative = true }))
--- hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.resize({ x = 10, y = 0, relative = true }))
--- hl.bind(mainMod .. " + SHIFT + up", hl.dsp.window.resize({ x = 0, y = -10, relative = true }))
--- hl.bind(mainMod .. " + SHIFT + down", hl.dsp.window.resize({ x = 0, y = 10, relative = true }))
---
+-- Directional Resizing (Coarse step: 5%)
+hl.bind(mainMod .. " + left", hl.dsp.layout("resizedir left 0.05"), { description = "Resize Left (5%)" })
+hl.bind(mainMod .. " + right", hl.dsp.layout("resizedir right 0.05"), { description = "Resize Right (5%)" })
+hl.bind(mainMod .. " + up", hl.dsp.layout("resizedir up 0.05"), { description = "Resize Up (5%)" })
+hl.bind(mainMod .. " + down", hl.dsp.layout("resizedir down 0.05"), { description = "Resize Down (5%)" })
+
+-- Directional Resizing (Fine SHIFT step: 1%)
+hl.bind(mainMod .. " + SHIFT + left", hl.dsp.layout("resizedir left 0.01"), { description = "Resize Left (1%)" })
+hl.bind(mainMod .. " + SHIFT + right", hl.dsp.layout("resizedir right 0.01"), { description = "Resize Right (1%)" })
+hl.bind(mainMod .. " + SHIFT + up", hl.dsp.layout("resizedir up 0.01"), { description = "Resize Up (1%)" })
+hl.bind(mainMod .. " + SHIFT + down", hl.dsp.layout("resizedir down 0.01"), { description = "Resize Down (1%)" })
 -- Actions
 hl.bind(mainMod .. " + escape", hl.dsp.exec_cmd("hyprlock"), { description = "Lock Screen" })
 hl.bind(mainMod .. " + P", hl.dsp.exec_cmd("wlogout -b 4"), { description = "Power Menu" })
