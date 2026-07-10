@@ -11,7 +11,11 @@ hl.bind(
 	{ release = true, description = "Menu" }
 ) -- Menu
 hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(home .. "/.config/rofi/wifi-menu.sh"), { description = "WiFi Menu" })
-hl.bind(mainMod .. " + SHIFT + I", hl.dsp.exec_cmd("rofi -show window"), { description = "Window Menu" })
+hl.bind(
+	mainMod .. " + SHIFT + I",
+	hl.dsp.exec_cmd("rofi -show window -kb-cancel 'Escape,Super_L' "),
+	{ description = "Window Menu" }
+)
 hl.bind(
 	mainMod .. " + K",
 	hl.dsp.exec_cmd(home .. "/.config/scripts/keybindings.sh"),
@@ -101,7 +105,11 @@ hl.bind(mainMod .. " + minus", hl.dsp.layout("resizestep -0.05"), { description 
 
 -- Small Adjustments (Fine SHIFT step: 1%)
 hl.bind(mainMod .. " + SHIFT + equal", hl.dsp.layout("resizestep 0.01"), { description = "Expand Focused Window (1%)" })
-hl.bind(mainMod .. " + SHIFT + minus", hl.dsp.layout("resizestep -0.01"), { description = "Shrink Focused Window (1%)" })
+hl.bind(
+	mainMod .. " + SHIFT + minus",
+	hl.dsp.layout("resizestep -0.01"),
+	{ description = "Shrink Focused Window (1%)" }
+)
 hl.bind(mainMod .. " + ALT + equal", hl.dsp.layout("default"), { description = "Reset Layout Size" })
 hl.bind(mainMod .. " + ALT + minus", hl.dsp.layout("default"), { description = "Reset Layout Size" })
 

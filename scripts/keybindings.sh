@@ -97,7 +97,7 @@ done
 
 # Feed and deploy Rofi
 rofi_input=$(printf "%s\n" "${menu_items[@]}")
-chosen_index=$(echo -e "${rofi_input}" | rofi -dmenu -i -p "  " -format 'i' -markup -no-show-icons)
+chosen_index=$(echo -e "${rofi_input}" | rofi -dmenu -i -p "  " -format 'i' -markup -no-show-icons -kb-cancel "Escape,Super_L")
 
 # Virtual Injector Command Event Fire
 if [[ -n "$chosen_index" ]] && [[ "$chosen_index" -lt "${#shortcuts[@]}" ]]; then

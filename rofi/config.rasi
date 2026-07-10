@@ -82,7 +82,7 @@ inputbar {
 }
 
 entry {
-    placeholder:                  " Search";
+    placeholder:                  "  Search";
     text-color:                   @normal-foreground;
     background-color:             transparent;
     padding:                      0px;

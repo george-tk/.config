@@ -5,5 +5,5 @@ if pgrep -x "rofi" > /dev/null; then
     pkill rofi
 else
     # Just open Rofi. Our background script will handle Waybar automatically.
-    rofi -show combi
+    rofi -show combi -kb-cancel "Escape,Super_L"
 fi
