@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 
 # Configuration
-ROFI_CMD="rofi -dmenu -i -config ~/.config/rofi/wifi-config.rasi"
+wifi_rofi() {
+    rofi -dmenu -i -config ~/.config/rofi/wifi-config.rasi -kb-cancel "Escape,Super_L" "$@"
+    local status=$?
+    touch "/tmp/rofi_cooldown"
+    (sleep 0.2 && rm -f "/tmp/rofi_cooldown") &
+    return $status
+}
+ROFI_CMD="wifi_rofi"
 SEPARATOR="────────────────────────────────────────"
 
 # 1. Get Radio Status

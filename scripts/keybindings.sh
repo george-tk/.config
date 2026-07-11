@@ -99,6 +99,10 @@ done
 rofi_input=$(printf "%s\n" "${menu_items[@]}")
 chosen_index=$(echo -e "${rofi_input}" | rofi -dmenu -i -p "  " -format 'i' -markup -no-show-icons -kb-cancel "Escape,Super_L")
 
+# Cooldown to prevent SUPER release from triggering main launcher
+touch "/tmp/rofi_cooldown"
+(sleep 0.2 && rm -f "/tmp/rofi_cooldown") &
+
 # Virtual Injector Command Event Fire
 if [[ -n "$chosen_index" ]] && [[ "$chosen_index" -lt "${#shortcuts[@]}" ]]; then
     IFS=";" read -r dispatcher arg target_mods target_key <<< "${shortcuts[$chosen_index]}"

@@ -13,7 +13,7 @@ hl.bind(
 hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(home .. "/.config/rofi/wifi-menu.sh"), { description = "WiFi Menu" })
 hl.bind(
 	mainMod .. " + SHIFT + I",
-	hl.dsp.exec_cmd("rofi -show window -kb-cancel 'Escape,Super_L' "),
+	hl.dsp.exec_cmd([[sh -c "rofi -show window -kb-cancel 'Escape,Super_L'; touch /tmp/rofi_cooldown; (sleep 0.2 && rm -f /tmp/rofi_cooldown) &"]]),
 	{ description = "Window Menu" }
 )
 hl.bind(
