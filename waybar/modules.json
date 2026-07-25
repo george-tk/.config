@@ -13,16 +13,8 @@
     "hyprland/workspaces" : {
         "on-click": "activate",
         "active-only": false,
-        "all-outputs": false,
-        "format": "{}",
-        "format-icons": {
-			"urgent": "",
-			"active": "",
-			"default": ""
-        },
-        // "persistent-workspaces": {
-        //      "*": 5
-        // }       
+        "all-outputs": true,
+        "format": "{name}"
     },
 
     // Hyprland Window
@@ -80,32 +72,32 @@
 
     // System
     "custom/system": {
-        "format": "",
+        "format": "",
         "tooltip": false
     },
 
     // CPU
     "cpu": {
-        "format": "/ C {usage}% ",
+        "format": "CPU  {usage}%",
         "on-click": "alacritty -e htop"
     },
 
     // Memory
     "memory": {
-        "format": "/ M {}% ",
+        "format": "RAM  {}%",
         "on-click": "alacritty -e htop"
     },
 
     // Harddisc space used
     "disk": {
         "interval": 30,
-        "format": "D {percentage_used}% ",
+        "format": "Disk  {percentage_used}%",
         "path": "/",
         "on-click": "alacritty -e htop"
     }, 
 
     "hyprland/language": {
-        "format": "/ K {short}"
+        "format": "Lang  {short}"
     },
 
     // Group Hardware
@@ -127,52 +119,48 @@
     
   // Network
   "network": {
-    "format": "󰤮",
-    "format-wifi": " ",
-    "format-ethernet": "  {ifname}",
+    "format-wifi": "",
+    "format-ethernet": "󰈀 {ifname}",
     "format-disconnected": "󰤮",
+    "format-disabled": "󰤮",
     "tooltip-format": " {ifname} via {gwaddri}",
     "tooltip-format-wifi": "{essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\nUp: {bandwidthUpBits} Down: {bandwidthDownBits}",
     "tooltip-format-ethernet": " {ifname}\nIP: {ipaddr}\n up: {bandwidthUpBits} down: {bandwidthDownBits}",
     "tooltip-format-disconnected": "Disconnected",
     "max-length": 50,
     "on-click": "bash -c '~/.config/rofi/wifi-menu.sh'",
-    "on-click-right": "bash -c '~/.config/rofi/wifi-menu.sh'",
+    "on-click-right": "nm-connection-editor"
   },
 
     // Battery
     "battery": {
         "states": {
-            // "good": 95,
             "warning": 20,
-            "critical": 5
+            "critical": 10
         },
-        "format": "{icon}   {capacity}%",
-        "format-charging": "  {capacity}%",
-        "format-plugged": "  {capacity}%",
-        "format-alt": "{icon}  {time}",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": [" ", " ", " ", " ", " "]
+        "format": "{icon} {capacity}%",
+        "format-charging": "󰂄 {capacity}%",
+        "format-plugged": "󰂄 {capacity}%",
+        "format-alt": "{icon} {time}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
 
     // Pulseaudio
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
-        "format": "{icon}  {volume}%",
+        "format": "{icon} {volume}%",
         "format-bluetooth": "{volume}% {icon} {format_source}",
-        "format-bluetooth-muted": " {icon} {format_source}",
-        "format-muted": "",
+        "format-bluetooth-muted": "󰝟",
+        "format-muted": "󰝟",
         "format-source": "{volume}% ",
         "format-source-muted": "",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
             "phone": "",
             "portable": "",
             "car": "",
-            "default": ["", " ", " "]
+            "default": ["󰕿", "󰖀", "󰕾"]
         },
         "on-click": "pavucontrol"
     },
@@ -180,7 +168,7 @@
     // Bluetooth
     "bluetooth": {
         "format": "󰂯",
-        "format-connected": "󰂯",
+        "format-connected": "󰂱 {device_alias}",
         "format-on": "󰂯",
         "format-off": "󰂲",
         "format-disabled": "󰂲",
@@ -205,5 +193,31 @@
             "deactivated": ""
         },
         "on-click-right": "hyprlock"        
+    },
+
+    "mpris": {
+        "format": "{status_icon}  {dynamic}",
+        "format-playing": "{status_icon}  {dynamic}",
+        "format-paused": "{status_icon}  {dynamic}",
+        "status-icons": {
+            "playing": "",
+            "paused": ""
+        },
+        "max-length": 55,
+        "on-click": "playerctl play-pause",
+        "on-click-right": "python3 ~/.config/scripts/go_to_media_player.py"
+    },
+
+    // Right Pill Module Group
+    "group/right-pill": {
+        "orientation": "horizontal",
+        "modules": [
+            "network",
+            "bluetooth",
+            "pulseaudio",
+            "battery",
+            "group/hardware",
+            "custom/exit"
+        ]
     }
-}               }
+}

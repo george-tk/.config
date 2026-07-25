@@ -48,9 +48,10 @@
 }
 
 window#waybar {
-    background-color: alpha(@base, 0.8);
-    border-bottom: 0px solid @text;
+    background-color: transparent;
     background: transparent;
+    border: none;
+    box-shadow: none;
     transition-property: background-color;
     transition-duration: .5s;
 }
@@ -60,50 +61,47 @@ window#waybar {
  * ----------------------------------------------------- */
 
 #workspaces {
-    background: transparent;
-    margin: 0px 10px 0px 0px;
-    padding: 0px;
-    border-radius: 0px;
-    font-size: 20px;
-    font-weight: bold;
-    font-style: normal;
-    opacity: 1.0;
-    color: @text;
+    background-color: rgba(30, 30, 46, 0.65);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin: 3px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #workspaces button {
-    padding: 0px 5px;
+    padding: 0px 8px;
     margin: 0px 2px;
-    border-radius: 0px;
-    color: @subtext0;
+    border-radius: 4px;
+    color: @lavender;
     background-color: transparent;
-    transition: all 0.1s linear;
-    opacity: 0.4;
-    font-size: 20px;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+    font-size: 22px;
 }
 
 #workspaces button.active {
-    color: @text;
-    background: transparent;
-    border-radius: 0px;
-    min-width: 30px;
-    transition: all 0.1s linear;
-    opacity:1.0;
+    color: @lavender;
+    background-color: transparent;
+    opacity: 1.0;
+    text-shadow: 0 0 4px rgba(180, 190, 254, 0.8), 0 0 8px rgba(180, 190, 254, 0.6);
 }
 
 #workspaces button:hover {
     color: @text;
-    background: transparent;
-    border-radius: 0px;
-    opacity:0.7;
+    background: @surface0;
+    opacity: 0.9;
 }
+
+
+
 
 /* -----------------------------------------------------
  * Tooltips
  * ----------------------------------------------------- */
 
 tooltip {
-    border-radius: 16px;
+    border-radius: 6px;
     background-color: @mantle;
     opacity:0.9;
     padding:20px;
@@ -316,13 +314,20 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #custom-exit {
-    background-color: transparent;
-    font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    background-color: @mantle;
+    font-size: 22px;
+    color: @red;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#custom-exit:hover {
+    background-color: @surface1;
+    border-color: @lavender;
 }
 
 /* -----------------------------------------------------
@@ -357,15 +362,29 @@ window#waybar.empty #window {
  * Hardware Group
  * ----------------------------------------------------- */
 
-#disk,#memory,#cpu,#language {
-    margin:0px 0px 0px 0px;
-    padding:0px;
-    font-size:18px; /* Increased font size */
-    color:@text;
+#hardware {
+    background-color: @mantle;
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#hardware #custom-system {
+    color: @lavender;
+}
+
+#disk, #memory, #cpu, #language {
+    margin: 0px 4px;
+    padding: 0px 4px;
+    font-size: 18px;
+    color: @lavender;
+    font-weight: 500;
 }
 
 #language {
-    margin-right:10px;
+    margin-right: 4px;
 }
 
 /* -----------------------------------------------------
@@ -384,13 +403,28 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #clock {
-    background-color: transparent;
+    background-color: rgba(30, 30, 46, 0.65);
     font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    color: @lavender;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 3px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#mpris {
+    background-color: rgba(30, 30, 46, 0.65);
+    font-size: 18px;
+    color: @lavender;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 3px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 /* -----------------------------------------------------
@@ -412,13 +446,20 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #pulseaudio {
-    background-color: transparent;
+    background-color: @mantle;
     font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    color: @blue;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#pulseaudio:hover {
+    background-color: @surface1;
+    border-color: @lavender;
 }
 
 #pulseaudio.muted,
@@ -436,13 +477,20 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #network {
-    background-color: transparent;
+    background-color: @mantle;
     font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    color: @teal;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#network:hover {
+    background-color: @surface1;
+    border-color: @lavender;
 }
 
 #network.ethernet {
@@ -460,19 +508,24 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #bluetooth, #bluetooth.on, #bluetooth.connected {
-    background-color: transparent;
+    background-color: @mantle;
     font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    color: @sapphire;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 #bluetooth.off, #bluetooth.disabled {
     color: @red;
-    padding: 0px 10px;
-    margin: 0px;
+}
+
+#bluetooth:hover {
+    background-color: @surface1;
+    border-color: @lavender;
 }
 
 /* -----------------------------------------------------
@@ -480,18 +533,24 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #battery {
-    background-color: transparent;
+    background-color: @mantle;
     font-size: 20px;
-    color: @text;
-    border-radius: 0px;
-    padding: 0px 10px;
-    margin: 0px;
-    opacity:1.0;
+    color: @green;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 #battery.charging, #battery.plugged {
-    color: @green;
-    background-color: transparent;
+    color: @yellow;
+}
+
+#battery:hover {
+    background-color: @surface1;
+    border-color: @lavender;
 }
 
 @keyframes blink {
@@ -516,7 +575,12 @@ window#waybar.empty #window {
  * ----------------------------------------------------- */
 
 #tray {
-    padding: 0px 0px 0px 0px; /* Decreased right padding to 0px */
+    background-color: @mantle;
+    border-radius: 6px;
+    padding: 2px 14px;
+    margin: 5px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #tray > .passive {
@@ -526,3 +590,71 @@ window#waybar.empty #window {
 #tray > .needs-attention {
     -gtk-icon-effect: highlight;
 }
+
+/* -----------------------------------------------------
+ * Unified Right Pill
+ * ----------------------------------------------------- */
+
+#right-pill {
+    background-color: rgba(30, 30, 46, 0.65);
+    border-radius: 6px;
+    padding: 2px 10px;
+    margin: 3px 4px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#right-pill #pulseaudio,
+#right-pill #bluetooth,
+#right-pill #network,
+#right-pill #battery,
+#right-pill #custom-exit,
+#right-pill #tray,
+#right-pill #hardware {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    margin: 0px 2px;
+    padding: 0px 6px;
+    border-radius: 0px;
+    color: @lavender;
+}
+
+#right-pill #pulseaudio:hover,
+#right-pill #bluetooth:hover,
+#right-pill #network:hover,
+#right-pill #battery:hover,
+#right-pill #custom-exit:hover {
+    background-color: @surface0;
+    border-radius: 6px;
+}
+
+#right-pill #network {
+    margin-right: 12px;
+}
+
+#right-pill #battery.charging,
+#right-pill #battery.plugged {
+    color: @lavender;
+}
+
+/* Glowing indicators only for important/critical states (uniform lavender glow) */
+#right-pill #pulseaudio.muted,
+#right-pill #network.disconnected,
+#right-pill #network.disabled,
+#right-pill #battery.warning,
+#right-pill #battery.critical,
+#right-pill #bluetooth.off,
+#right-pill #bluetooth.disabled {
+    color: @lavender;
+    text-shadow: 0 0 8px rgba(180, 190, 254, 0.8);
+}
+
+/* Override and disable red blinking background for critical battery in the right pill */
+#right-pill #battery.critical:not(.charging) {
+    background-color: transparent;
+    color: @lavender;
+    text-shadow: 0 0 8px rgba(180, 190, 254, 0.8);
+    animation: none;
+}
+

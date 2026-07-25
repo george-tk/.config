@@ -75,6 +75,9 @@ PACKAGES=(
     "wireplumber"
     "wl-clipboard"
     "cliphist"
+    "wtype"
+    "playerctl"
+    "network-manager-applet"
 
     # Development
     "nodejs"
@@ -91,6 +94,12 @@ PACKAGES=(
     "catppuccin-gtk-theme-mocha"
     "catppuccin-cursors-mocha"
     "papirus-icon-theme"
+
+    # SDDM QML dependencies
+    "qt5-quickcontrols"
+    "qt5-quickcontrols2"
+    "qt5-graphicaleffects"
+    "qt5-svg"
 )
 
 # ----------------------------------------------------------
@@ -108,6 +117,19 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
+# Enable temporary passwordless sudo for REAL_USER during setup
+# so sub-processes (yay, makepkg, pacman) won't prompt for passwords repeatedly
+SUDOERS_TEMP="/etc/sudoers.d/99_hyprland_setup_temp"
+cleanup_sudoers() {
+    rm -f "$SUDOERS_TEMP"
+}
+trap cleanup_sudoers EXIT INT TERM
+
+if [ -n "$REAL_USER" ] && [ "$REAL_USER" != "root" ]; then
+    echo "$REAL_USER ALL=(ALL) NOPASSWD: ALL" > "$SUDOERS_TEMP"
+    chmod 0440 "$SUDOERS_TEMP"
+fi
+
 # ----------------------------------------------------------
 # 1. Base Setup (Yay & Base Devel)
 # ----------------------------------------------------------
@@ -121,10 +143,10 @@ setup_base() {
         rm -rf "$yay_dir"
         
         # Clone as the real user to avoid permission issues
-        sudo -u "$REAL_USER" git clone https://aur.archlinux.org/yay.git "$yay_dir"
+        sudo -u "$REAL_USER" -H git clone https://aur.archlinux.org/yay.git "$yay_dir"
         
         cd "$yay_dir"
-        sudo -u "$REAL_USER" makepkg -si --noconfirm
+        sudo -u "$REAL_USER" -H makepkg -si --noconfirm
         cd "$SCRIPT_DIR"
         rm -rf "$yay_dir"
         log_success "yay installed successfully."
@@ -141,7 +163,7 @@ install_packages() {
     
     # Changed -S to -Syu to ensure the whole system stays in sync
     # This prevents the "breaks dependency" errors you just saw
-    sudo -u "$REAL_USER" yay -Syu --needed --noconfirm "${PACKAGES[@]}"
+    sudo -u "$REAL_USER" -H yay -Syu --needed --noconfirm "${PACKAGES[@]}"
     
     log_success "All packages installed and system updated."
 }
@@ -159,7 +181,7 @@ setup_npm() {
     chown -R "$REAL_USER:$REAL_USER" "$npm_global_dir"
     
     # Configure npm prefix
-    sudo -u "$REAL_USER" npm config set prefix "$npm_global_dir"
+    sudo -u "$REAL_USER" -H npm config set prefix "$npm_global_dir"
 }
 
 # ----------------------------------------------------------
@@ -171,10 +193,10 @@ setup_antigravity() {
     # Ensure ~/.local/bin exists
     local local_bin_dir="$REAL_HOME/.local/bin"
     mkdir -p "$local_bin_dir"
-    chown -R "$REAL_USER:$REAL_USER" "$local_bin_dir"
+    chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.local"
     
     # Install via official curl script run as real user
-    sudo -u "$REAL_USER" bash -c "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+    sudo -u "$REAL_USER" -H bash -c "curl -fsSL https://antigravity.google/cli/install.sh | bash"
 }
 
 # ----------------------------------------------------------
@@ -193,6 +215,19 @@ setup_sddm() {
         cp "$CONFIG_DIR/sddm/sddm.conf" /etc/sddm.conf
         log_success "SDDM config installed."
     fi
+
+    # Set up shared active wallpaper file for seamless SDDM transition
+    log_info "Setting up shared SDDM wallpaper sync file..."
+    local sddm_wallpaper_file="/var/lib/sddm-wallpaper.jpg"
+    touch "$sddm_wallpaper_file"
+    chown "$REAL_USER:sddm" "$sddm_wallpaper_file"
+    chmod 664 "$sddm_wallpaper_file"
+    
+    # Initialize the wallpaper copy
+    if [ -f "$CONFIG_DIR/scripts/rotate-wallpaper.sh" ]; then
+        sudo -u "$REAL_USER" -H bash "$CONFIG_DIR/scripts/rotate-wallpaper.sh" || log_warn "Initial wallpaper rotation sync skipped."
+    fi
+    log_success "SDDM wallpaper sync file configured."
 }
 
 # ----------------------------------------------------------
@@ -207,7 +242,7 @@ setup_cron() {
         local cron_cmd="*/15 * * * * $rotate_script"
         
         # Add cron job idempotently for the real user
-        sudo -u "$REAL_USER" bash -c "crontab -l 2>/dev/null | grep -vF \"$rotate_script\" | cat - <(echo \"$cron_cmd\") | crontab -"
+        sudo -u "$REAL_USER" -H bash -c "crontab -l 2>/dev/null | grep -vF \"$rotate_script\" | cat - <(echo \"$cron_cmd\") | crontab -"
         log_success "Cron job updated."
     else
         log_warn "Rotate script not found at $rotate_script"
@@ -265,12 +300,12 @@ gtk-application-prefer-dark-theme=1
 EOF
     
     # Set gsettings for GTK4 and desktop services
-    sudo -u "$REAL_USER" gsettings set org.gnome.desktop.interface gtk-theme "catppuccin-mocha-blue-standard+default"
-    sudo -u "$REAL_USER" gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-    sudo -u "$REAL_USER" gsettings set org.gnome.desktop.interface cursor-theme "catppuccin-mocha-blue-cursors"
-    sudo -u "$REAL_USER" gsettings set org.gnome.desktop.interface color-scheme "prefer-dark"
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface gtk-theme "catppuccin-mocha-blue-standard+default" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface cursor-theme "catppuccin-mocha-blue-cursors" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
 
-    chown -R "$REAL_USER:$REAL_USER" "$gtk3_dir"
+    chown -R "$REAL_USER:$REAL_USER" "$gtk3_dir" "$REAL_HOME/.config"
     log_success "GTK settings applied."
 }
 
@@ -285,11 +320,12 @@ setup_shell() {
         # Backup existing .zshrc if it's not a symlink
         if [ -f "$REAL_HOME/.zshrc" ] && [ ! -L "$REAL_HOME/.zshrc" ]; then
             mv "$REAL_HOME/.zshrc" "$REAL_HOME/.zshrc.bak"
+            chown "$REAL_USER:$REAL_USER" "$REAL_HOME/.zshrc.bak" 2>/dev/null || true
             log_info "Backed up existing .zshrc to .zshrc.bak"
         fi
         
         # Create symlink as the user
-        sudo -u "$REAL_USER" ln -sf "$CONFIG_DIR/zsh/zshrc" "$REAL_HOME/.zshrc"
+        sudo -u "$REAL_USER" -H ln -sf "$CONFIG_DIR/zsh/zshrc" "$REAL_HOME/.zshrc"
         log_success "Linked .zshrc"
     fi
 
@@ -298,6 +334,39 @@ setup_shell() {
         log_info "Changing default shell to zsh for $REAL_USER..."
         chsh -s /usr/bin/zsh "$REAL_USER"
     fi
+
+    # Install custom desktop applications launchers
+    if [ -d "$CONFIG_DIR/applications" ]; then
+        log_info "Installing custom desktop entries..."
+        local dest_apps="$REAL_HOME/.local/share/applications"
+        mkdir -p "$dest_apps"
+        cp "$CONFIG_DIR/applications/"* "$dest_apps/"
+        
+        # User-independent path adjustment in launcher files
+        sed -i "s|/home/[^/]*|$REAL_HOME|g" "$dest_apps/"*.desktop 2>/dev/null || true
+        
+        chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.local"
+        log_success "Custom desktop entries installed."
+    fi
+
+    # Set up custom icons for Chrome web apps in Rofi window switcher
+    log_info "Installing custom web app icons for window switcher..."
+    local dest_icons="$REAL_HOME/.local/share/icons/hicolor/scalable/apps"
+    mkdir -p "$dest_icons"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/gmail.svg" "$dest_icons/chrome-mail.google.com__-default.svg"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/gmail.svg" "$dest_icons/chrome-mail.google.com_-default.svg"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/gemini.svg" "$dest_icons/chrome-gemini.google.com__-default.svg"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/gemini.svg" "$dest_icons/chrome-gemini.google.com_-default.svg"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/youtube.svg" "$dest_icons/chrome-www.youtube.com__-default.svg"
+    ln -sf "/usr/share/icons/Papirus/64x64/apps/youtube.svg" "$dest_icons/chrome-www.youtube.com_-default.svg"
+    
+    sudo -u "$REAL_USER" -H gtk-update-icon-cache -f -t "$REAL_HOME/.local/share/icons/hicolor" 2>/dev/null || true
+    chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.local/share/icons" "$REAL_HOME/.local"
+    log_success "Custom web app icons installed."
+
+    # Ensure all helper and daemon scripts are executable
+    log_info "Setting execute permissions on all helper and daemon scripts..."
+    chmod +x "$CONFIG_DIR/scripts/"*.py "$CONFIG_DIR/scripts/"*.sh || true
 }
 
 # ----------------------------------------------------------
@@ -321,6 +390,30 @@ setup_initramfs() {
         log_error "/etc/mkinitcpio.conf not found!"
     fi
 }
+
+# ----------------------------------------------------------
+# 10. Fix Permissions & Ownership
+# ----------------------------------------------------------
+fix_permissions() {
+    log_info "Restoring ownership of user configuration and data files to $REAL_USER..."
+    
+    # Ensure all user config and local files under $REAL_HOME are owned by $REAL_USER
+    chown -R "$REAL_USER:$REAL_USER" \
+        "$REAL_HOME/.config" \
+        "$REAL_HOME/.local" \
+        "$REAL_HOME/.cache" \
+        "$REAL_HOME/.npm-global" 2>/dev/null || true
+
+    if [ -f "$REAL_HOME/.zshrc" ]; then
+        chown "$REAL_USER:$REAL_USER" "$REAL_HOME/.zshrc"
+    fi
+    if [ -f "$REAL_HOME/.zshrc.bak" ]; then
+        chown "$REAL_USER:$REAL_USER" "$REAL_HOME/.zshrc.bak"
+    fi
+    
+    log_success "User permissions restored successfully."
+}
+
 # ----------------------------------------------------------
 # Main Execution
 # ----------------------------------------------------------
@@ -376,6 +469,7 @@ enable_services
 setup_gtk
 setup_shell
 setup_initramfs
+fix_permissions
 
 echo
 log_success "Installation complete!"

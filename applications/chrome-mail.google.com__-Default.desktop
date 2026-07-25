@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Gmail
+Comment=Gmail Web App
+Exec=sh -c '"$HOME/.config/scripts/open_web_app.sh https://mail.google.com/"'
+Icon=gmail
+Terminal=false
+StartupWMClass=chrome-mail.google.com__-Default
+Categories=Network;WebBrowser;

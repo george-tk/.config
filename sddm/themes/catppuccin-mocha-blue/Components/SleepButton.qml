@@ -17,8 +17,8 @@ Item {
     }
     background: Rectangle {
       id: sleepButtonBg
-      color: "#F38BA8"
-      radius: 3
+      color: "#B4BEFE"
+      radius: 6
     }
     states: [
       State {
@@ -26,7 +26,7 @@ Item {
         when: sleepButton.hovered
         PropertyChanges {
           target: sleepButtonBg
-          color: "#F5E0DC"
+          color: "#CDD6F4"
         }
       }
     ]

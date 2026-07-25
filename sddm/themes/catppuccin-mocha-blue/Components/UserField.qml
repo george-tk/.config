@@ -21,7 +21,7 @@ TextField {
   background: Rectangle {
     id: userFieldBackground
     color: "#313244"
-    radius: 3
+    radius: 6
   }
   states: [
     State {

@@ -11,3 +11,15 @@ hl.window_rule({
 
 -- Rofi: Handled by animations.conf and waybar_sync script
 -- No special rules needed here currently
+
+-- Rofi Frosted Glass Layer Rule
+hl.layer_rule({
+    match = { namespace = "rofi" },
+    blur = true,
+})
+
+-- Wlogout Frosted Glass Layer Rule
+hl.layer_rule({
+    match = { namespace = "wlogout" },
+    blur = true,
+})

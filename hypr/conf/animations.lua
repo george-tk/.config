@@ -31,7 +31,7 @@ hl.animation({ leaf = "border", enabled = true, speed = 10, bezier = "default" }
 hl.animation({ leaf = "fade", enabled = true, speed = 3, bezier = "md3_decel" })
 hl.animation({ leaf = "layers", enabled = false })
 hl.animation({ leaf = "fadeLayers", enabled = false })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 7, bezier = "menu_decel", style = "slide" })
+hl.animation({ leaf = "workspaces", enabled = true, speed = 2.5, bezier = "easeOutExpo", style = "slide" })
 -- hl.animation({ leaf = "workspaces", enabled = true, speed = 2.5, bezier = "softAcDecel", style = "slide" })
 -- hl.animation({ leaf = "workspaces", enabled = true, speed = 7, bezier = "menu_decel", style = "slidefade 15%" })
 -- hl.animation({ leaf = "specialWorkspace", enabled = true, speed = 3, bezier = "md3_decel", style = "slidefadevert 15%" })

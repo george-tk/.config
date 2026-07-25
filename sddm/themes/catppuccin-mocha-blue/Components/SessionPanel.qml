@@ -29,7 +29,7 @@ Item {
       background: Rectangle {
         id: sessionEntryBackground
         color: "#45475A"
-        radius: 3
+        radius: 6
       }
       states: [
         State {
@@ -65,12 +65,12 @@ Item {
       source: Qt.resolvedUrl("../icons/settings.svg")
       height: height
       width: width
-      color: "#CDD6F4"
+      color: "#11111B"
     }
     background: Rectangle {
       id: sessionButtonBackground
-      color: "#313244"
-      radius: 3
+      color: "#B4BEFE"
+      radius: 6
     }
     states: [
       State {
@@ -78,7 +78,7 @@ Item {
         when: sessionButton.down
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#45475A"
+          color: "#CDD6F4"
         }
       },
       State {
@@ -86,7 +86,7 @@ Item {
         when: sessionButton.hovered
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#585B70"
+          color: "#CDD6F4"
         }
       },
       State {
@@ -94,7 +94,7 @@ Item {
         when: sessionPopup.visible
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#585B70"
+          color: "#CDD6F4"
         }
       }
     ]

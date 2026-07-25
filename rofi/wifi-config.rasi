@@ -8,22 +8,23 @@
 * {
     /* Map your theme variables */
     background-color:             transparent;
-    text-color:                   @text;
+    text-color:                   @overlay2;
     margin:                       0;
     padding:                      0;
     spacing:                      0;
 }
 configuration {
 	font: "JetBrainsMono Nerd Font 16";
+	markup-rows: true;
 }
 window {
     location:                     center;
-    width:                        35%;
+    width:                        48%;
     border:                       0px;
-    border-color:                 @base;
-    border-radius:                16px;
-    background-color:             @base;
-    padding:                      30px;
+    border-color:                 @surface0;
+    border-radius:                6px;
+    background-color:             #1e1e2ef2; /* 95% opacity base for high contrast */
+    padding:                      0px;
 }
 
 mainbox {
@@ -34,17 +35,17 @@ mainbox {
 
 inputbar {
     children:                     [ "prompt", "entry" ];
-    margin:                       0px 0px 25px 0px;
-    padding:                      15px;
-    border:                       2px;
-    border-radius:                12px;
-    border-color:                 @mauve;
-    background-color:             @surface0;
+    margin:                       0px;
+    padding:                      20px 24px;
+    border:                       0px 0px 1px 0px;
+    border-radius:                0px;
+    border-color:                 @surface0;
+    background-color:             transparent;
 }
 
 prompt {
     spacing:                      0;
-    text-color:                   @text;
+    text-color:                   @lavender;
     margin:                       0px 10px 0px 0px;
     background-color:             transparent;
 }
@@ -63,15 +64,16 @@ listview {
     cycle:                        true;
     scrollbar:                    false;
     layout:                       vertical;
-    spacing:                      10px;
+    spacing:                      4px;
+    padding:                      10px 0px;
     background-color:             transparent;
 }
 
 /* ---- Elements ---- */
 element {
     enabled:                      true;
-    padding:                      10px;
-    border-radius:                10px;
+    padding:                      12px 24px;
+    border-radius:                0px;
     cursor:                       pointer;
     background-color:             transparent;
 }
@@ -83,10 +85,10 @@ element alternate.normal {
     text-color:                   @text;
 }
 
-element selected.normal {
+element selected.normal,
+element selected.active {
     background-color:             @surface0;
-    text-color:                   @text;
-    border-radius:                10px;
+    text-color:                   @lavender;
 }
 
 element-text {
@@ -100,9 +102,10 @@ element-text {
 
 /* ---- Message Area ---- */
 message {
-    padding:                      1px;
-    border-color:                 @surface1;
-    border:                       2px dash 0px 0px;
+    padding:                      15px 24px;
+    border-color:                 @surface0;
+    border:                       1px 0px 0px 0px;
+    margin:                       0px;
 }
 
 textbox {

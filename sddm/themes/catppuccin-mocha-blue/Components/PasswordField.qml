@@ -20,7 +20,7 @@ TextField {
   horizontalAlignment: TextInput.AlignHCenter
   background: Rectangle {
     id: passFieldBackground
-    radius: 3
+    radius: 6
     color: "#313244"
   }
   states: [

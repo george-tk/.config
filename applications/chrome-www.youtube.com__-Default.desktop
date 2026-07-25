@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=YouTube
+Comment=YouTube Web App
+Exec=sh -c '"$HOME/.config/scripts/open_web_app.sh https://www.youtube.com/"'
+Icon=youtube
+Terminal=false
+StartupWMClass=chrome-www.youtube.com__-Default
+Categories=Network;Video;WebBrowser;

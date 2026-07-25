@@ -5,9 +5,9 @@ hl.config({
     decoration = {
         rounding = 10,
         active_opacity = 1.0,
-        inactive_opacity = 0.9,
+        inactive_opacity = 0.94,
         dim_inactive = true,
-        dim_strength = 0.1,
+        dim_strength = 0.08,
 
         blur = {
             enabled = true,
@@ -16,9 +16,10 @@ hl.config({
         },
         shadow = {
             enabled = true,
-            range = 4,
+            range = 10,
             render_power = 3,
-            color = "rgba(" .. colors.mantleAlpha .. "ee)",
+            color = "rgba(" .. colors.lavenderAlpha .. "33)",
+            color_inactive = "rgba(00000000)",
         },
     },
 })

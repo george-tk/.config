@@ -7,7 +7,8 @@ TERM_EMULATOR="kitty"
 if [ -z "$@" ]; then
     # If no selection, output the list of files
     # looking in Home, hidden files included, ignoring .git
-    fd --type f --type d --hidden --follow --exclude .git . $HOME
+    fd --type d --hidden --follow --exclude .git . $HOME | sed 's/$/\x00icon\x1ffolder/'
+    fd --type f --hidden --follow --exclude .git . $HOME | sed 's/$/\x00icon\x1ftext-x-generic/'
 else
     # If a selection is made, open it in the terminal with nvim
     # setsid decouples the process so it doesn't die when Rofi closes

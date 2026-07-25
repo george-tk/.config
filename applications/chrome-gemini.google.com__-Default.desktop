@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Gemini
+Comment=Gemini AI Web App
+Exec=sh -c '"$HOME/.config/scripts/open_web_app.sh https://gemini.google.com/"'
+Icon=gemini
+Terminal=false
+StartupWMClass=chrome-gemini.google.com__-Default
+Categories=Network;WebBrowser;

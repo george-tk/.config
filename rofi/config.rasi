@@ -7,21 +7,20 @@
 
 * {
     /* Theme-specific variables */
-    normal-foreground:            @text;
+    normal-foreground:            @overlay2;
     normal-background:            transparent;
-    selected-normal-background:   @surface0;
-    selected-normal-foreground:   @text;
+    selected-normal-background:   transparent;
+    selected-normal-foreground:   @lavender;
     urgent-background:            @red;
     urgent-foreground:            @base;
     active-foreground:            @blue;
-    alternate-normal-foreground:  @text;
+    alternate-normal-foreground:  @overlay2;
     alternate-urgent-foreground:  @urgent-foreground;
     alternate-active-foreground:  @active-foreground;
     selected-active-foreground:   @blue;
     selected-urgent-background:   @red;
     selected-urgent-foreground:   @base;
     separatorcolor:               @surface1;
-
 
     background-color:             transparent;
     text-color:                   @text;
@@ -32,15 +31,18 @@
 }
 
 configuration {
-    modi: "combi,files:~/.config/rofi/files.sh,";
-    combi-modi: "window,drun,files,";
+    modi: "combi,files:~/.config/rofi/files.sh,win:~/.config/scripts/window_switcher.py,";
+    combi-modi: "win,drun,files,";
     font: "JetBrainsMono Nerd Font 16";
     show-icons: true;
+    markup-rows: true;
+    combi-hide-mode-prefix: true;
     icon-theme: "Papirus";
-    drun-display-format: "<b><span color='#cba6f7'>{name}</span></b>";
-    window-format: "<b><span color='#cba6f7'>{c}</span></b>  │  <span color='#a6adc8'>{t}</span>";
+    drun-display-format: "<b>{name}</b>";
+    window-format: "<b>{c}</b>  │  {t}";
     display-drun: "      ";
     display-window: "  ";
+    display-win: "  ";
     display-run: " ";
     display-files: "      ";
     display-keys: " Keys";
@@ -53,17 +55,20 @@ configuration {
         directories-first: true;
         sorting-method:    "name";
     }
+    window {
+        prefer-icon-theme: true;
+    }
     window-thumbnail: true;
 }
 
 window {
     location:                     center;
-    width:                        35%;
+    width:                        48%;
     border:                       0px;
-    border-color:                 @base;
-    border-radius:                16px;
-    background-color:             @base;
-    padding:                      30px;
+    border-color:                 @surface0;
+    border-radius:                6px;
+    background-color:             #1e1e2ef2; /* 95% opacity base for high contrast */
+    padding:                      0px;
 }
 
 mainbox {
@@ -73,24 +78,24 @@ mainbox {
 
 inputbar {
     children:                     [ "prompt", "entry" ];
-    margin:                       0px 0px 25px 0px;
-    padding:                      15px;
-    border:                       2px;
-    border-radius:                12px;
-    border-color:                 @mauve;
-    background-color:             @surface0;
+    margin:                       0px;
+    padding:                      20px 24px;
+    border:                       0px 0px 1px 0px;
+    border-radius:                0px;
+    border-color:                 @surface0;
+    background-color:             transparent;
 }
 
 entry {
-    placeholder:                  "  Search";
-    text-color:                   @normal-foreground;
+    placeholder:                  " Search";
+    text-color:                   @text;
     background-color:             transparent;
     padding:                      0px;
 }
 
 prompt {
     spacing:    0;
-    text-color: @normal-foreground;
+    text-color: @lavender;
 }
 
 /* ---- Mode Switcher ---- */
@@ -131,8 +136,8 @@ listview {
     reverse:                      false;
     fixed-height:                 false;
     fixed-columns:                true;
-    spacing:                      10px;
-    padding:                      0px;
+    spacing:                      4px;
+    padding:                      10px 0px;
     margin:                       0px;
     background-color:             transparent;
     border:                       0px;
@@ -147,11 +152,11 @@ sidebar {
 /* ---- Element ---- */
 element {
     enabled:                      true;
-    padding:                      10px;
+    padding:                      12px 24px;
     margin:                       0px;
     cursor:                       pointer;
     background-color:             transparent;
-    border-radius:                10px;
+    border-radius:                0px;
     border:                       0px;
 }
 
@@ -171,18 +176,17 @@ element normal.active {
 }
 
 element selected.normal {
-    background-color:            @selected-normal-background;
-    text-color:                  @selected-normal-foreground;
-    border-radius:               10px;
+    background-color:            @surface0;
+    text-color:                  @lavender;
 }
 
 element selected.urgent {
-    background-color:            @selected-urgent-background;
-    text-color:                  @selected-urgent-foreground;
+    background-color:            @urgent-background;
+    text-color:                  @urgent-foreground;
 }
 
 element selected.active {
-    background-color:            transparent;
+    background-color:            @surface0;
     text-color:                  @selected-active-foreground;
 }
 
@@ -220,9 +224,9 @@ element-text {
 
 /*****----- Message -----*****/
 message {
-    padding:                     1px;
-    border-color:                @separatorcolor;
-    border:                      2px dash 0px 0px;
+    padding:                     15px 24px;
+    border-color:                @surface0;
+    border:                      1px 0px 0px 0px;
     background-color:            transparent;
     margin:                      0px;
     spacing:                     0px;

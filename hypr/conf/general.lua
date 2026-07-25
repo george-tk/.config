@@ -5,10 +5,10 @@ hl.config({
 	general = {
 		gaps_in = 5,
 		gaps_out = 9,
-		border_size = 3,
+		border_size = 0,
 		col = {
-			active_border = { colors = { colors.blue, colors.mauve }, angle = 45 },
-			inactive_border = "rgba(" .. colors.mantleAlpha .. "aa)",
+			active_border = colors.lavender,
+			inactive_border = colors.surface0,
 		},
 		-- layout = "master",
 		layout = "lua:spiral",

@@ -13,7 +13,7 @@ hl.bind(
 hl.bind(mainMod .. " + I", hl.dsp.exec_cmd(home .. "/.config/rofi/wifi-menu.sh"), { description = "WiFi Menu" })
 hl.bind(
 	mainMod .. " + SHIFT + I",
-	hl.dsp.exec_cmd([[sh -c "rofi -show window -kb-cancel 'Escape,Super_L'; touch /tmp/rofi_cooldown; (sleep 0.2 && rm -f /tmp/rofi_cooldown) &"]]),
+	hl.dsp.exec_cmd([[sh -c "~/.config/scripts/window_switcher.py; touch /tmp/rofi_cooldown; (sleep 0.2 && rm -f /tmp/rofi_cooldown) &"]]),
 	{ description = "Window Menu" }
 )
 hl.bind(
@@ -21,9 +21,15 @@ hl.bind(
 	hl.dsp.exec_cmd(home .. "/.config/scripts/keybindings.sh"),
 	{ description = "Keybinds Menu" }
 )
+hl.bind(
+	mainMod .. " + V",
+	hl.dsp.exec_cmd(home .. "/.config/scripts/cliphist-menu.sh"),
+	{ description = "Clipboard Menu" }
+)
 
 -- Applications
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("kitty"), { description = "Open Terminal" })
+hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("kitty --class neovim nvim"), { description = "Open Neovim" })
 hl.bind(
 	mainMod .. " + A",
 	hl.dsp.exec_cmd(home .. "/.config/scripts/open_web_app.sh https://gemini.google.com/"),
@@ -36,6 +42,11 @@ hl.bind(
 	mainMod .. " + G",
 	hl.dsp.exec_cmd(home .. "/.config/scripts/open_web_app.sh https://mail.google.com/"),
 	{ description = "Open Gmail" }
+)
+hl.bind(
+	mainMod .. " + Y",
+	hl.dsp.exec_cmd(home .. "/.config/scripts/open_web_app.sh https://www.youtube.com/"),
+	{ description = "Open YouTube" }
 )
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("blueman-manager"), { description = "Open Bluetooth Manager" })
 
@@ -160,6 +171,12 @@ hl.bind(
 	hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),
 	{ description = "Toggle Mic Mute" }
 )
+hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { description = "Play/Pause Media" })
+hl.bind("XF86AudioNext", hl.dsp.exec_cmd("playerctl next"), { description = "Next Track" })
+hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { description = "Previous Track" })
+hl.bind(mainMod .. " + ALT + Space", hl.dsp.exec_cmd("playerctl play-pause"), { description = "Play/Pause Media (Alt)" })
+hl.bind(mainMod .. " + ALT + Right", hl.dsp.exec_cmd("playerctl next"), { description = "Next Track (Alt)" })
+hl.bind(mainMod .. " + ALT + Left", hl.dsp.exec_cmd("playerctl previous"), { description = "Previous Track (Alt)" })
 hl.bind("XF86WLAN", hl.dsp.exec_cmd("nmcli radio wifi toggle"), { description = "Toggle WiFi" })
 hl.bind("XF86Refresh", hl.dsp.exec_cmd("xdotool key F5"), { description = "Refresh" })
 
@@ -187,4 +204,11 @@ hl.bind(
 	mainMod .. " + SHIFT + 0",
 	hl.dsp.window.move({ workspace = "10" }),
 	{ description = "Move Window to Workspace 10" }
+)
+
+-- Global Media Control
+hl.bind(
+    mainMod .. " + space",
+    hl.dsp.exec_cmd("playerctl play-pause"),
+    { description = "Toggle Media Play/Pause" }
 )

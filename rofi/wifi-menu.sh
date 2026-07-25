@@ -9,7 +9,7 @@ wifi_rofi() {
     return $status
 }
 ROFI_CMD="wifi_rofi"
-SEPARATOR="────────────────────────────────────────"
+SEPARATOR="──────────────────────────────────────────────────────────────"
 
 # 1. Get Radio Status
 wifi_state=$(nmcli radio wifi)
@@ -20,7 +20,7 @@ active_data=$(nmcli -t -f ACTIVE,SIGNAL,FREQ,SSID dev wifi | grep '^yes' | head 
 
 if [[ -n "$active_data" ]]; then
     current_sig=$(echo "$active_data" | cut -d: -f2)
-    current_freq=$(echo "$active_data" | cut -d: -f3)
+    current_freq=$(echo "$active_data" | cut -d: -f3 | sed 's/[^0-9]//g')
     current_ssid=$(echo "$active_data" | cut -d: -f4)
     current_band=$([[ $current_freq -lt 3000 ]] && echo "2.4G" || echo "5G")
     status="Connected: $current_ssid (${current_sig}% | $current_band)"
@@ -47,13 +47,13 @@ else
             id = ssid band;
             
             if (id != aid && ssid != "" && !seen[id]++) {
-                printf "<b><span color=\"#cba6f7\">%-25s</span></b>  │  <span color=\"#a6adc8\">%3d%%  [%s]</span>\n", ssid, sig, band
+                printf "<b><span color=\"#b4befe\">%-45s</span></b>  │  <span color=\"#a6adc8\">%3d%%  [%s]</span>\n", ssid, sig, band
             }
         }')
 fi
 
 # 4. Create Menu
-options="<b><span color=\"#cba6f7\">$toggle</span></b>\n<b><span color=\"#cba6f7\">󰑐  Refresh List</span></b>\n<b><span color=\"#cba6f7\">󰑐  Manual Entry / Hidden SSID</span></b>\n<b><span color=\"#cba6f7\">󰃢  Disconnect</span></b>\n$SEPARATOR\n$provider_list"
+options="<b><span color=\"#b4befe\">$toggle</span></b>\n<b><span color=\"#b4befe\">󰑐  Refresh List</span></b>\n<b><span color=\"#b4befe\">󰑐  Manual Entry / Hidden SSID</span></b>\n<b><span color=\"#b4befe\">󰃢  Disconnect</span></b>\n$SEPARATOR\n$provider_list"
 
 # 5. Rofi Prompt
 chosen=$(echo -e "$options" | $ROFI_CMD -p "$status")

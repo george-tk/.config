@@ -77,4 +77,4 @@ alias c='clear'
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
-export PATH="/home/georgek/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
