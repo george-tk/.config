@@ -24,6 +24,7 @@ require("conf/layouts")
 require("conf/gestures")
 require("conf/misc")
 require("conf/windowrules")
+require("conf/workspaces")
 require("conf/binds")
 
 -- Main autostarts

@@ -7,9 +7,5 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-# Open the URL in Google Chrome's app mode, optionally setting the class
-if [ -n "$2" ]; then
-  google-chrome-stable --app="$1"
-else
-  google-chrome-stable --app="$1"
-fi
+# Open the URL in Google Chrome's app mode with optimized Wayland flags
+google-chrome-stable --disable-features=Vulkan --ozone-platform-hint=auto --app="$1" &

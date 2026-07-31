@@ -4,6 +4,8 @@
 local mainMod = "SUPER"
 local home = os.getenv("HOME")
 
+local ws = require("conf/workspaces")
+
 -- Rofi
 hl.bind(
 	mainMod .. " + " .. mainMod .. "_L",
@@ -37,7 +39,7 @@ hl.bind(
 )
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd("thunar"), { description = "Open File Manager" })
 hl.bind(mainMod .. " + SHIFT + A", hl.dsp.exec_cmd("pavucontrol"), { description = "Open Audio Control" })
-hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("google-chrome-stable"), { description = "Open Web Browser" })
+hl.bind(mainMod .. " + B", hl.dsp.exec_cmd("google-chrome-stable --disable-features=Vulkan --ozone-platform-hint=auto"), { description = "Open Web Browser" })
 hl.bind(
 	mainMod .. " + G",
 	hl.dsp.exec_cmd(home .. "/.config/scripts/open_web_app.sh https://mail.google.com/"),
@@ -51,14 +53,17 @@ hl.bind(
 hl.bind(mainMod .. " + SHIFT + B", hl.dsp.exec_cmd("blueman-manager"), { description = "Open Bluetooth Manager" })
 
 -- Navigation (Windows)
-hl.bind(mainMod .. " + Q", hl.dsp.window.close(), { description = "Close Window" })
+hl.bind(mainMod .. " + Q", function()
+	hl.dispatch(hl.dsp.window.close())
+	ws.compact()
+end, { description = "Close Window" })
 hl.bind(mainMod .. " + Tab", hl.dsp.layout("cyclenext"), { description = "Cycle Next Window" })
 hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.layout("cycleprev"), { description = "Cycle Previous Window" })
 hl.bind(mainMod .. " + ALT + Tab", hl.dsp.layout("swapnext"), { description = "Swap Next Window" })
 hl.bind(mainMod .. " + SHIFT + ALT + Tab", hl.dsp.layout("swapprev"), { description = "Swap Previous Window" })
 
 -- Navigation (Workspace)
-hl.bind(mainMod .. " + W", hl.dsp.focus({ workspace = "r+1" }), { description = "Next Workspace" })
+hl.bind(mainMod .. " + W", ws.smart_switch("empty"), { description = "Next Workspace" })
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.focus({ workspace = "r-1" }), { description = "Previous Workspace" })
 hl.bind(
 	mainMod .. " + ALT + W",
@@ -74,8 +79,8 @@ hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }), { descr
 hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { description = "Scroll Previous Workspace" })
 
 -- Navigation (Display)
-hl.bind(mainMod .. " + D", hl.dsp.focus({ monitor = "+1" }), { description = "Focus Next Monitor" })
-hl.bind(mainMod .. " + SHIFT + D", hl.dsp.focus({ monitor = "-1" }), { description = "Focus Previous Monitor" })
+hl.bind(mainMod .. " + D", ws.smart_focus_monitor("+1"), { description = "Focus Next Monitor" })
+hl.bind(mainMod .. " + SHIFT + D", ws.smart_focus_monitor("-1"), { description = "Focus Previous Monitor" })
 hl.bind(
 	mainMod .. " + ALT + D",
 	hl.dsp.window.move({ monitor = "+1" }),
@@ -186,23 +191,23 @@ hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("loginctl lock-session"), { lock
 -- Triggered when the lid is opened
 hl.bind("switch:off:Lid Switch", hl.dsp.dpms({ action = "enable" }), { locked = true })
 
--- Navigate workspaces by number
+-- Navigate workspaces by number (Pure Lua Consolidation & Monitor Swapping)
 for i = 1, 9 do
 	hl.bind(
 		mainMod .. " + " .. i,
-		hl.dsp.focus({ workspace = tostring(i) }),
+		ws.smart_switch(i),
 		{ description = "Switch to Workspace " .. i }
 	)
 	hl.bind(
 		mainMod .. " + SHIFT + " .. i,
-		hl.dsp.window.move({ workspace = tostring(i) }),
+		ws.smart_move(i),
 		{ description = "Move Window to Workspace " .. i }
 	)
 end
-hl.bind(mainMod .. " + 0", hl.dsp.focus({ workspace = "10" }), { description = "Switch to Workspace 10" })
+hl.bind(mainMod .. " + 0", ws.smart_switch(10), { description = "Switch to Workspace 10" })
 hl.bind(
 	mainMod .. " + SHIFT + 0",
-	hl.dsp.window.move({ workspace = "10" }),
+	ws.smart_move(10),
 	{ description = "Move Window to Workspace 10" }
 )
 

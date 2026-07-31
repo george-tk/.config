@@ -27,6 +27,7 @@ hl.env("APPIMAGELAUNCHER_DISABLE", "1")
 
 -- OZONE
 hl.env("OZONE_PLATFORM", "wayland")
+hl.env("ELECTRON_OZONE_PLATFORM_HINT", "auto")
 
 -- For KVM virtual machines
 -- hl.env("WLR_NO_HARDWARE_CURSORS", "1")
