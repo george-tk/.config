@@ -66,7 +66,10 @@ PACKAGES=(
     "ripgrep"
     "fd"
     "fzf"
+    "less"
     "tree-sitter-cli"
+    "lsof"
+    "imagemagick"
 
     # Apps
     "thunar"
@@ -197,6 +200,21 @@ setup_antigravity() {
     
     # Install via official curl script run as real user
     sudo -u "$REAL_USER" -H bash -c "curl -fsSL https://antigravity.google/cli/install.sh | bash"
+}
+
+# ----------------------------------------------------------
+# 3c. OpenCode AI Configuration
+# ----------------------------------------------------------
+setup_opencode() {
+    log_info "Installing OpenCode CLI for user: $REAL_USER"
+    
+    local opencode_bin="$REAL_HOME/.opencode/bin/opencode"
+    if [ ! -f "$opencode_bin" ] && ! command -v opencode &> /dev/null; then
+        sudo -u "$REAL_USER" -H bash -c "curl -fsSL https://opencode.ai/install.sh | bash"
+        log_success "OpenCode CLI installed."
+    else
+        log_success "OpenCode CLI is already installed."
+    fi
 }
 
 # ----------------------------------------------------------
@@ -402,6 +420,7 @@ fix_permissions() {
         "$REAL_HOME/.config" \
         "$REAL_HOME/.local" \
         "$REAL_HOME/.cache" \
+        "$REAL_HOME/.opencode" \
         "$REAL_HOME/.npm-global" 2>/dev/null || true
 
     if [ -f "$REAL_HOME/.zshrc" ]; then
@@ -462,6 +481,7 @@ fi
 
 setup_npm
 setup_antigravity
+setup_opencode
 setup_sddm
 setup_timezone
 setup_cron
