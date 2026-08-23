@@ -80,7 +80,7 @@ BEGIN { RS = "" }
         if (desc == "") { desc = "No description" }
 
         # Output Line 1: Colored Rofi String
-        printf "<b><span color=\"#b4befe\">%-26s</span></b>  <span color=\"#45475a\">│</span>  <span color=\"#a6adc8\">%s</span>\n", bind_part, desc
+        printf "<b><span color=\"#cdd6f4\">%-26s</span></b>  <span color=\"#45475a\">│</span>  <span color=\"#a6adc8\">%s</span>\n", bind_part, desc
         
         # Output Line 2: The shortcut packaged arguments
         print dispatcher ";" arg ";" w_mods ";" w_key

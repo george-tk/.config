@@ -80,7 +80,7 @@ hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }), { descrip
 
 -- Navigation (Display)
 hl.bind(mainMod .. " + D", ws.smart_focus_monitor("+1"), { description = "Focus Next Monitor" })
-hl.bind(mainMod .. " + SHIFT + D", ws.smart_focus_monitor("-1"), { description = "Focus Previous Monitor" })
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("nwg-displays"), { description = "Display Settings" })
 hl.bind(
 	mainMod .. " + ALT + D",
 	hl.dsp.window.move({ monitor = "+1" }),
@@ -185,11 +185,9 @@ hl.bind(mainMod .. " + ALT + Left", hl.dsp.exec_cmd("playerctl previous"), { des
 hl.bind("XF86WLAN", hl.dsp.exec_cmd("nmcli radio wifi toggle"), { description = "Toggle WiFi" })
 hl.bind("XF86Refresh", hl.dsp.exec_cmd("xdotool key F5"), { description = "Refresh" })
 
--- Triggered when the lid is closed
-hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd("loginctl lock-session"), { locked = true })
-
--- Triggered when the lid is opened
-hl.bind("switch:off:Lid Switch", hl.dsp.dpms({ action = "enable" }), { locked = true })
+-- Clamshell Mode (Triggered when the lid is closed/opened)
+hl.bind("switch:on:Lid Switch", hl.dsp.exec_cmd(home .. "/.config/scripts/lid-handler.sh close"), { locked = true })
+hl.bind("switch:off:Lid Switch", hl.dsp.exec_cmd(home .. "/.config/scripts/lid-handler.sh open"), { locked = true })
 
 -- Navigate workspaces by number (Pure Lua Consolidation & Monitor Swapping)
 for i = 1, 9 do

@@ -16,8 +16,10 @@ node_modules/
 # SDDM System Files (Keep the themes, but ignore root-owned files if any)
 # sddm/sddm.conf should be kept as it's part of your config
 
-# Thunar Trash/Metadata
-Thunar/
+# Thunar Trash/Metadata (preserve custom actions uca.xml)
+Thunar/*
+!Thunar/uca.xml
+!Thunar/accels.scm
 
 # Any large binary files that might have snuck in
 # wallpapers/ is fine since you want those.

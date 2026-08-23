@@ -1,0 +1,126 @@
+/* Catppuccin Mocha Surface0 & Pure Neutral Styling for Thunar & GTK3 */
+
+@define-color base_color #1e1e2e;
+@define-color bg_color #1e1e2e;
+@define-color fg_color #cdd6f4;
+@define-color text_color #cdd6f4;
+@define-color selected_bg_color #313244;
+@define-color selected_fg_color #cdd6f4;
+@define-color tooltip_bg_color #181825;
+@define-color tooltip_fg_color #cdd6f4;
+
+/* 1. Global Zero Rounding */
+* {
+    border-radius: 0px;
+}
+
+/* 2. Global Selection Highlight */
+:selected,
+*:selected,
+.selection,
+view:selected,
+treeview:selected,
+iconview:selected,
+entry:selected {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* 3. Thunar Window & General Panes */
+.thunar,
+.thunar window,
+.thunar .standard-view,
+.thunar treeview,
+.thunar iconview {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+}
+
+/* 4. Thunar Sidebar (Places / Bookmarks) */
+.thunar .sidebar,
+.thunar .sidebar treeview {
+    background-color: #181825;
+    color: #bac2de;
+    border-right: 3px solid #313244;
+}
+
+.thunar .sidebar treeview:selected,
+.thunar .sidebar treeview row:selected,
+.thunar .sidebar row:selected {
+    background-color: #313244;
+    color: #cdd6f4;
+    font-weight: bold;
+}
+
+.thunar .sidebar row:hover,
+.thunar .sidebar treeview row:hover {
+    background-color: alpha(#313244, 0.4);
+    color: #cdd6f4;
+}
+
+/* 5. Thunar Main File Grid / Detailed List */
+.thunar .standard-view view:selected,
+.thunar .standard-view iconview:selected,
+.thunar .standard-view treeview:selected {
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+}
+
+.thunar .standard-view iconview:hover,
+.thunar .standard-view treeview row:hover {
+    background-color: alpha(#313244, 0.35);
+}
+
+/* 6. Thunar Top Toolbar & Breadcrumb Pathbar */
+.thunar toolbar,
+.thunar .location-bar,
+.thunar headerbar {
+    background-color: #181825;
+    color: #cdd6f4;
+    border-bottom: 3px solid #313244;
+    padding: 3px 6px;
+}
+
+.thunar path-bar button {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    border: 1px solid #313244;
+    border-radius: 0px;
+    margin: 2px 3px;
+    padding: 3px 8px;
+    font-size: 13px;
+}
+
+.thunar path-bar button:checked,
+.thunar path-bar button:active {
+    background-color: #313244;
+    color: #cdd6f4;
+    border-color: #45475a;
+}
+
+.thunar path-bar button:hover {
+    background-color: #313244;
+    color: #cdd6f4;
+}
+
+/* 7. Search & Location Entry */
+.thunar entry {
+    background-color: #181825;
+    color: #cdd6f4;
+    border: 2px solid #313244;
+    border-radius: 0px;
+    padding: 4px 8px;
+}
+
+.thunar entry:focus {
+    border-color: #45475a;
+}
+
+/* 8. Statusbar at bottom */
+.thunar statusbar,
+.thunar .statusbar {
+    background-color: #181825;
+    color: #a6adc8;
+    border-top: 2px solid #313244;
+}

@@ -10,7 +10,7 @@
     normal-foreground:            @overlay2;
     normal-background:            transparent;
     selected-normal-background:   transparent;
-    selected-normal-foreground:   @lavender;
+    selected-normal-foreground:   @text;
     urgent-background:            @red;
     urgent-foreground:            @base;
     active-foreground:            @blue;
@@ -37,7 +37,7 @@ configuration {
     show-icons: true;
     markup-rows: true;
     combi-hide-mode-prefix: true;
-    icon-theme: "Papirus";
+    icon-theme: "Papirus-Dark";
     drun-display-format: "<b>{name}</b>";
     window-format: "<b>{c}</b>  │  {t}";
     display-drun: "      ";
@@ -64,9 +64,9 @@ configuration {
 window {
     location:                     center;
     width:                        48%;
-    border:                       0px;
+    border:                       3px;
     border-color:                 @surface0;
-    border-radius:                6px;
+    border-radius:                0px;
     background-color:             #1e1e2ef2; /* 95% opacity base for high contrast */
     padding:                      0px;
 }
@@ -80,7 +80,7 @@ inputbar {
     children:                     [ "prompt", "entry" ];
     margin:                       0px;
     padding:                      20px 24px;
-    border:                       0px 0px 1px 0px;
+    border:                       0px 0px 3px 0px;
     border-radius:                0px;
     border-color:                 @surface0;
     background-color:             transparent;
@@ -95,7 +95,7 @@ entry {
 
 prompt {
     spacing:    0;
-    text-color: @lavender;
+    text-color: @text;
 }
 
 /* ---- Mode Switcher ---- */
@@ -177,7 +177,7 @@ element normal.active {
 
 element selected.normal {
     background-color:            @surface0;
-    text-color:                  @lavender;
+    text-color:                  @text;
 }
 
 element selected.urgent {

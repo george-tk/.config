@@ -5,6 +5,8 @@ local home = os.getenv("HOME")
 
 hl.on("hyprland.start", function()
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+	hl.exec_cmd(home .. "/.config/scripts/hypr-socket-bridge.py")
+	hl.exec_cmd("hyprctl setcursor catppuccin-mocha-dark-cursors 24")
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("dunst")
 	hl.exec_cmd("wl-paste --type text --watch cliphist store")

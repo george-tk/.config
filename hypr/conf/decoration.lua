@@ -3,7 +3,7 @@
 
 hl.config({
     decoration = {
-        rounding = 10,
+        rounding = 0,
         active_opacity = 1.0,
         inactive_opacity = 0.94,
         dim_inactive = true,
@@ -16,11 +16,7 @@ hl.config({
             new_optimizations = true,
         },
         shadow = {
-            enabled = true,
-            range = 10,
-            render_power = 3,
-            color = "rgba(" .. colors.lavenderAlpha .. "33)",
-            color_inactive = "rgba(00000000)",
+            enabled = false,
         },
     },
 })

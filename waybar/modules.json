@@ -148,11 +148,9 @@
     // Pulseaudio
     "pulseaudio": {
         "format": "{icon} {volume}%",
-        "format-bluetooth": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{icon} {volume}%",
         "format-bluetooth-muted": "󰝟",
         "format-muted": "󰝟",
-        "format-source": "{volume}% ",
-        "format-source-muted": "",
         "format-icons": {
             "headphone": "󰋋",
             "hands-free": "󰋎",
@@ -165,14 +163,32 @@
         "on-click": "pavucontrol"
     },
 
+    // Microphone
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-bluetooth": "{format_source}",
+        "format-bluetooth-muted": "{format_source}",
+        "format-muted": "{format_source}",
+        "format-source": "",
+        "format-source-muted": "",
+        "tooltip-format": "{source_desc} (Muted)",
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+        "on-scroll-up": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 1%+",
+        "on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 1%-",
+        "max-volume": 100
+    },
+
     // Bluetooth
     "bluetooth": {
         "format": "󰂯",
-        "format-connected": "󰂱 {device_alias}",
+        "format-connected": "󰂱",
         "format-on": "󰂯",
         "format-off": "󰂲",
         "format-disabled": "󰂲",
         "format-no-controller": "󰂲",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "interval": 30,
         "on-click": "blueman-manager"
     },
@@ -181,7 +197,7 @@
     "user": {
         "format": "{user}",
         "interval": 60,
-        "icon": false,
+        "icon": false
     },
 
     // Idle Inhibator
@@ -215,6 +231,7 @@
             "network",
             "bluetooth",
             "pulseaudio",
+            "pulseaudio#microphone",
             "battery",
             "group/hardware",
             "custom/exit"

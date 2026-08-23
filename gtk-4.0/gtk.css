@@ -1,0 +1,19 @@
+/* Catppuccin Mocha Surface0 & Pure Neutral Styling for GTK4 */
+
+@define-color base_color #1e1e2e;
+@define-color bg_color #1e1e2e;
+@define-color fg_color #cdd6f4;
+@define-color text_color #cdd6f4;
+@define-color selected_bg_color #313244;
+@define-color selected_fg_color #cdd6f4;
+
+* {
+    border-radius: 0px;
+}
+
+:selected,
+*:selected,
+.selection {
+    background-color: #313244;
+    color: #cdd6f4;
+}

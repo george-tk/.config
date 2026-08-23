@@ -13,14 +13,17 @@ hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 
 -- GTK
-hl.env("GTK_THEME", "catppuccin-mocha-rosewater-standard+default")
+hl.env("GTK_THEME", "catppuccin-mocha-lavender-standard+default")
 hl.env("GDK_SCALE", "1")
 
 -- Mozilla
 hl.env("MOZ_ENABLE_WAYLAND", "1")
 
--- Set the cursor size for xcursor
+-- Cursor theme and size
+hl.env("XCURSOR_THEME", "catppuccin-mocha-dark-cursors")
 hl.env("XCURSOR_SIZE", "24")
+hl.env("HYPRCURSOR_THEME", "catppuccin-mocha-dark-cursors")
+hl.env("HYPRCURSOR_SIZE", "24")
 
 -- Disable appimage launcher by default
 hl.env("APPIMAGELAUNCHER_DISABLE", "1")

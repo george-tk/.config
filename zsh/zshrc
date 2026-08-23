@@ -81,3 +81,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
+
+# opencode
+export PATH=/home/georgek/.opencode/bin:$PATH

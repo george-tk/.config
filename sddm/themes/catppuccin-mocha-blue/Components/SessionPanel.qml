@@ -28,8 +28,10 @@ Item {
       }
       background: Rectangle {
         id: sessionEntryBackground
-        color: "#45475A"
-        radius: 6
+        color: sessionEntry.highlighted ? "#313244" : "#1E1E2E"
+        radius: 0
+        border.width: sessionEntry.highlighted ? 1 : 0
+        border.color: "#45475A"
       }
       states: [
         State {
@@ -37,14 +39,14 @@ Item {
           when: sessionEntry.hovered
           PropertyChanges {
             target: sessionEntryBackground
-            color: "#585B70"
+            color: "#313244"
           }
         }
       ]
       transitions: Transition {
         PropertyAnimation {
           property: "color"
-          duration: 300
+          duration: 150
         }
       }
       MouseArea {
@@ -63,14 +65,16 @@ Item {
     hoverEnabled: true
     icon {
       source: Qt.resolvedUrl("../icons/settings.svg")
-      height: height
-      width: width
-      color: "#11111B"
+      height: height * 0.55
+      width: width * 0.55
+      color: "#CDD6F4"
     }
     background: Rectangle {
       id: sessionButtonBackground
-      color: "#B4BEFE"
-      radius: 6
+      color: "#1E1E2E"
+      radius: 0
+      border.width: 3
+      border.color: "#313244"
     }
     states: [
       State {
@@ -78,7 +82,8 @@ Item {
         when: sessionButton.down
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#CDD6F4"
+          color: "#313244"
+          border.color: "#45475A"
         }
       },
       State {
@@ -86,7 +91,8 @@ Item {
         when: sessionButton.hovered
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#CDD6F4"
+          color: "#313244"
+          border.color: "#45475A"
         }
       },
       State {
@@ -94,13 +100,14 @@ Item {
         when: sessionPopup.visible
         PropertyChanges {
           target: sessionButtonBackground
-          color: "#CDD6F4"
+          color: "#313244"
+          border.color: "#45475A"
         }
       }
     ]
     transitions: Transition {
       PropertyAnimation {
-        properties: "color"
+        properties: "color,border.color"
         duration: 150
       }
     }
@@ -116,8 +123,10 @@ Item {
     y: -(contentHeight + padding * 2) + sessionButton.height
     padding: inputHeight / 10
     background: Rectangle {
-      radius: 5.4
-      color: "#313244"
+      radius: 0
+      color: "#1E1E2E"
+      border.width: 3
+      border.color: "#313244"
     }
     contentItem: ListView {
       id: sessionList
@@ -133,14 +142,14 @@ Item {
           property: "opacity"
           from: 0
           to: 1
-          duration: 400
+          duration: 300
           easing.type: Easing.OutExpo
         }
         NumberAnimation {
           property: "x"
           from: sessionPopup.x + (inputWidth * 0.1)
           to: sessionPopup.x
-          duration: 500
+          duration: 400
           easing.type: Easing.OutExpo
         }
       }
@@ -150,7 +159,7 @@ Item {
         property: "opacity"
         from: 1
         to: 0
-        duration: 300
+        duration: 200
         easing.type: Easing.OutExpo
       }
     }

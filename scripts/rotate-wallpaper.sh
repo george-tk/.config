@@ -35,6 +35,9 @@ export HYPRLAND_INSTANCE_SIGNATURE=$(hyprctl instances -j | jq -r '.[0].instance
 if [ "$1" == "--init" ] && [ -f /var/lib/sddm-wallpaper.jpg ]; then
     echo "Init mode: restoring active SDDM login wallpaper."
     RANDOM_WALLPAPER="/var/lib/sddm-wallpaper.jpg"
+elif [ -n "$1" ] && [ -f "$1" ]; then
+    echo "Manual mode: setting wallpaper from argument: $1"
+    RANDOM_WALLPAPER="$1"
 else
     WALLPAPER_DIR="$HOME/.config/wallpapers"
     WALLPAPER_FILES=$(find "$WALLPAPER_DIR" -type f \

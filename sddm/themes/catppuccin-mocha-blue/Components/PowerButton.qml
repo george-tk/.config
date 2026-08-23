@@ -11,14 +11,16 @@ Item {
     hoverEnabled: true
     icon {
       source: Qt.resolvedUrl("../icons/power.svg")
-      height: height
-      width: width
-      color: "#11111B"
+      height: height * 0.55
+      width: width * 0.55
+      color: "#CDD6F4"
     }
     background: Rectangle {
       id: powerButtonBackground
-      radius: 6
-      color: "#B4BEFE"
+      radius: 0
+      color: "#1E1E2E"
+      border.width: 3
+      border.color: "#313244"
     }
     states: [
       State {
@@ -26,14 +28,15 @@ Item {
         when: powerButton.hovered
         PropertyChanges {
           target: powerButtonBackground
-          color: "#CDD6F4"
+          color: "#313244"
+          border.color: "#45475A"
         }
       }
     ]
     transitions: Transition {
       PropertyAnimation {
-        properties: "color"
-        duration: 300
+        properties: "color,border.color"
+        duration: 200
       }
     }
     onClicked: sddm.powerOff()

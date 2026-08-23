@@ -47,13 +47,13 @@ else
             id = ssid band;
             
             if (id != aid && ssid != "" && !seen[id]++) {
-                printf "<b><span color=\"#b4befe\">%-45s</span></b>  │  <span color=\"#a6adc8\">%3d%%  [%s]</span>\n", ssid, sig, band
+                printf "<b><span color=\"#cdd6f4\">%-45s</span></b>  │  <span color=\"#a6adc8\">%3d%%  [%s]</span>\n", ssid, sig, band
             }
         }')
 fi
 
 # 4. Create Menu
-options="<b><span color=\"#b4befe\">$toggle</span></b>\n<b><span color=\"#b4befe\">󰑐  Refresh List</span></b>\n<b><span color=\"#b4befe\">󰑐  Manual Entry / Hidden SSID</span></b>\n<b><span color=\"#b4befe\">󰃢  Disconnect</span></b>\n$SEPARATOR\n$provider_list"
+options="<b><span color=\"#cdd6f4\">$toggle</span></b>\n<b><span color=\"#cdd6f4\">󰑐  Refresh List</span></b>\n<b><span color=\"#cdd6f4\">󰑐  Manual Entry / Hidden SSID</span></b>\n<b><span color=\"#cdd6f4\">󰃢  Disconnect</span></b>\n$SEPARATOR\n$provider_list"
 
 # 5. Rofi Prompt
 chosen=$(echo -e "$options" | $ROFI_CMD -p "$status")

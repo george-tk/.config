@@ -12,11 +12,11 @@ by Stephan Raabe (2024)
 
 @define-color text #CDD6F4;
 @define-color crust #11111B;
+@define-color surface0 #313244;
 @define-color overlay0 #6C7086;
-@define-color lavender #B4BEFE;
 
 * {
-    font-family: "Fira Sans Semibold", FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-family: "JetBrainsMono Nerd Font", FontAwesome;
 	background-image: none;
 	transition: 20ms;
 	box-shadow: none;
@@ -28,21 +28,22 @@ window {
 
 button {
 	color: @text;
-    font-size:20px;
+    font-size: 20px;
 
     background-repeat: no-repeat;
 	background-position: center;
 	background-size: 25%;
-	border: none;
+	border: 3px solid @surface0;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
 
 button:focus,
-button:active {
-    color: @lavender;
-	border: none;
-	background-color: alpha(@lavender, 0.1);
+button:active,
+button:hover {
+    color: @text;
+	border: 3px solid @surface0;
+	background-color: @surface0;
 }
 
 /* 
@@ -53,40 +54,24 @@ Buttons
 
 #lock {
 	margin: 10px;
-	border-radius: 6px;
+	border-radius: 0px;
 	background-image: image(url("icons/lock.png"));
-}
-
-#lock:focus, #lock:active {
-	background-image: image(url("icons/lock_lavender.png"));
 }
 
 #logout {
 	margin: 10px;
-	border-radius: 6px;
+	border-radius: 0px;
 	background-image: image(url("icons/logout.png"));
-}
-
-#logout:focus, #logout:active {
-	background-image: image(url("icons/logout_lavender.png"));
 }
 
 #shutdown {
 	margin: 10px;
-	border-radius: 6px;
+	border-radius: 0px;
 	background-image: image(url("icons/shutdown.png"));
-}
-
-#shutdown:focus, #shutdown:active {
-	background-image: image(url("icons/shutdown_lavender.png"));
 }
 
 #reboot {
 	margin: 10px;
-	border-radius: 6px;
+	border-radius: 0px;
 	background-image: image(url("icons/reboot.png"));
-}
-
-#reboot:focus, #reboot:active {
-	background-image: image(url("icons/reboot_lavender.png"));
 }

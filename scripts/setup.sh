@@ -52,6 +52,7 @@ PACKAGES=(
     "hyprlock"
     "hypridle"
     "wlogout"
+    "nwg-displays"
     "qt5-wayland"
     "qt6-wayland"
 
@@ -71,8 +72,25 @@ PACKAGES=(
     "lsof"
     "imagemagick"
 
-    # Apps
+    # Apps & File Management
     "thunar"
+    "thunar-volman"
+    "thunar-archive-plugin"
+    "thunar-media-tags-plugin"
+    "gvfs"
+    "gvfs-mtp"
+    "udisks2"
+    "file-roller"
+    "p7zip"
+    "unrar"
+    "tumbler"
+    "ffmpegthumbnailer"
+    "poppler-glib"
+    "webp-pixbuf-loader"
+    "libgsf"
+    "dosfstools"
+    "exfatprogs"
+    "ntfs-3g"
     "google-chrome"
     "pavucontrol"
     "wireplumber"
@@ -88,9 +106,6 @@ PACKAGES=(
 
     # Fonts
     "ttf-font-awesome"
-    "ttf-fira-sans"
-    "ttf-fira-code"
-    "ttf-firacode-nerd"
     "ttf-jetbrains-mono-nerd"
 
     # GTK Themes
@@ -300,31 +315,89 @@ enable_services() {
 }
 
 # ----------------------------------------------------------
-# 7. GTK Configuration
+# 6b. Clamshell Mode & Display Configuration
+# ----------------------------------------------------------
+setup_clamshell() {
+    log_info "Configuring systemd-logind for Laptop Clamshell mode..."
+    mkdir -p /etc/systemd/logind.conf.d
+    cat > /etc/systemd/logind.conf.d/lid.conf <<'EOF'
+[Login]
+HandleLidSwitch=suspend
+HandleLidSwitchDocked=ignore
+HandleLidSwitchExternalPower=ignore
+EOF
+    log_success "Clamshell mode configuration created in /etc/systemd/logind.conf.d/lid.conf"
+}
+
+# ----------------------------------------------------------
+# 7. GTK & Theme Configuration
 # ----------------------------------------------------------
 setup_gtk() {
-    log_info "Configuring GTK Themes for Catppuccin Mocha Blue..."
+    log_info "Configuring GTK, Icons & Cursor Themes for Catppuccin Mocha..."
     
     local gtk3_dir="$REAL_HOME/.config/gtk-3.0"
-    mkdir -p "$gtk3_dir"
+    local gtk4_dir="$REAL_HOME/.config/gtk-4.0"
+    local icons_def="$REAL_HOME/.icons/default"
+    mkdir -p "$gtk3_dir" "$gtk4_dir" "$icons_def"
     
-    # Update settings.ini
+    # Update GTK 3 & 4 settings.ini
     cat > "$gtk3_dir/settings.ini" <<EOF
 [Settings]
-gtk-theme-name=catppuccin-mocha-blue-standard+default
+gtk-theme-name=catppuccin-mocha-lavender-standard+default
 gtk-icon-theme-name=Papirus-Dark
-gtk-cursor-theme-name=catppuccin-mocha-blue-cursors
+gtk-cursor-theme-name=catppuccin-mocha-dark-cursors
+gtk-cursor-theme-size=24
+gtk-font-name=JetBrainsMono Nerd Font 11
 gtk-application-prefer-dark-theme=1
+EOF
+    cp "$gtk3_dir/settings.ini" "$gtk4_dir/settings.ini"
+
+    # Default XCursor inheritance
+    cat > "$icons_def/index.theme" <<EOF
+[Icon Theme]
+Name=Default
+Comment=Default Cursor Theme
+Inherits=catppuccin-mocha-dark-cursors
 EOF
     
     # Set gsettings for GTK4 and desktop services
-    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface gtk-theme "catppuccin-mocha-blue-standard+default" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface gtk-theme "catppuccin-mocha-lavender-standard+default" 2>/dev/null || true
     sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark" 2>/dev/null || true
-    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface cursor-theme "catppuccin-mocha-blue-cursors" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface cursor-theme "catppuccin-mocha-dark-cursors" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface cursor-size 24 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface font-name "JetBrainsMono Nerd Font 11" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface monospace-font-name "JetBrainsMono Nerd Font 11" 2>/dev/null || true
+    sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface document-font-name "JetBrainsMono Nerd Font 11" 2>/dev/null || true
     sudo -u "$REAL_USER" -H gsettings set org.gnome.desktop.interface color-scheme "prefer-dark" 2>/dev/null || true
 
-    chown -R "$REAL_USER:$REAL_USER" "$gtk3_dir" "$REAL_HOME/.config"
-    log_success "GTK settings applied."
+    chown -R "$REAL_USER:$REAL_USER" "$gtk3_dir" "$gtk4_dir" "$icons_def" "$REAL_HOME/.config"
+    log_success "GTK and cursor settings applied."
+}
+
+# ----------------------------------------------------------
+# 7b. Thunar & File Management Configuration
+# ----------------------------------------------------------
+setup_thunar() {
+    log_info "Configuring Thunar and File Management..."
+
+    # Configure Papirus folder icons to sleek grey
+    log_info "Setting Papirus folder icons to grey..."
+    if command -v papirus-folders &>/dev/null; then
+        papirus-folders -C grey -t Papirus-Dark -u 2>/dev/null || true
+    else
+        curl -sL https://raw.githubusercontent.com/PapirusDevelopmentTeam/papirus-folders/master/papirus-folders -o /usr/local/bin/papirus-folders 2>/dev/null || true
+        chmod +x /usr/local/bin/papirus-folders 2>/dev/null || true
+        /usr/local/bin/papirus-folders -C grey -t Papirus-Dark -u 2>/dev/null || true
+    fi
+
+    # Disable built-in inactive XFCE wallpaper plugin (so only Hyprland wallpaper action appears)
+    local xfce_wallpaper_plugin="/usr/lib/thunarx-3/thunar-wallpaper-plugin.so"
+    if [ -f "$xfce_wallpaper_plugin" ]; then
+        log_info "Disabling inactive XFCE wallpaper plugin..."
+        rm -f "$xfce_wallpaper_plugin"
+    fi
+
+    log_success "Thunar configured successfully."
 }
 
 # ----------------------------------------------------------
@@ -366,6 +439,37 @@ setup_shell() {
         chown -R "$REAL_USER:$REAL_USER" "$REAL_HOME/.local"
         log_success "Custom desktop entries installed."
     fi
+
+    # Streamline Application Launcher (Hide unwanted helper / dependency GUI entries)
+    log_info "Hiding unwanted application launcher entries..."
+    local dest_apps="$REAL_HOME/.local/share/applications"
+    mkdir -p "$dest_apps"
+    local hide_apps=(
+        "avahi-discover.desktop"
+        "bssh.desktop"
+        "bvnc.desktop"
+        "xgps.desktop"
+        "xgpsspeed.desktop"
+        "lstopo.desktop"
+        "xfce4-about.desktop"
+        "rofi.desktop"
+        "rofi-theme-selector.desktop"
+        "thunar-bulk-rename.desktop"
+        "thunar-settings.desktop"
+        "blueman-adapters.desktop"
+        "vim.desktop"
+    )
+    for app in "${hide_apps[@]}"; do
+        cat > "$dest_apps/$app" <<'EOF'
+[Desktop Entry]
+Type=Application
+Name=Hidden
+Hidden=true
+NoDisplay=true
+EOF
+    done
+    chown -R "$REAL_USER:$REAL_USER" "$dest_apps"
+    log_success "Unwanted launcher entries hidden."
 
     # Set up custom icons for Chrome web apps in Rofi window switcher
     log_info "Installing custom web app icons for window switcher..."
@@ -486,7 +590,9 @@ setup_sddm
 setup_timezone
 setup_cron
 enable_services
+setup_clamshell
 setup_gtk
+setup_thunar
 setup_shell
 setup_initramfs
 fix_permissions

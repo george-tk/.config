@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal (Kitty) Here</name>
+	<submenu></submenu>
+	<unique-id>1700000000000001-1</unique-id>
+	<command>kitty --directory %f</command>
+	<description>Open Kitty terminal in this directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>nvim</icon>
+	<name>Edit in Neovim</name>
+	<submenu></submenu>
+	<unique-id>1700000000000002-2</unique-id>
+	<command>kitty -e nvim %f</command>
+	<description>Open selected file with Neovim</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<other-files/>
+	<text-files/>
+</action>
+<action>
+	<icon>preferences-desktop-wallpaper</icon>
+	<name>Set as Hyprland Wallpaper</name>
+	<submenu></submenu>
+	<unique-id>1700000000000003-3</unique-id>
+	<command>sh -c '&quot;$HOME/.config/scripts/rotate-wallpaper.sh&quot; &quot;$1&quot;' _ %f</command>
+	<description>Set this image as Hyprland and SDDM wallpaper</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<image-files/>
+</action>
+<action>
+	<icon>edit-copy</icon>
+	<name>Copy Full Path</name>
+	<submenu></submenu>
+	<unique-id>1700000000000004-4</unique-id>
+	<command>wl-copy -n %f</command>
+	<description>Copy full file/folder path to clipboard</description>
+	<range></range>
+	<patterns>*</patterns>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+	<directories/>
+</action>
+<action>
+	<icon>system-file-manager</icon>
+	<name>Open as Root</name>
+	<submenu></submenu>
+	<unique-id>1700000000000005-5</unique-id>
+	<command>pkexec thunar %f</command>
+	<description>Open folder with elevated root permissions</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+</actions>

@@ -17,7 +17,9 @@ Item {
     }
     height: inputHeight * ( config.UserIcon == "true" ? 11.2 : 5.3 )
     width: inputWidth * 1.2
-    radius: 5
+    radius: 0
+    border.width: 3
+    border.color: "#313244"
     visible: config.LoginBackground == "true" ? true : false
     color: "#181825"
   }
